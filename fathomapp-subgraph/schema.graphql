@@ -1,0 +1,23 @@
+type Pool @entity {
+  id: String!
+  poolName: String!
+  debtCeiling: BigInt!
+  liquidtionRatio: BigInt!
+  stabilityFeeRate: BigInt!
+  tokenAdapterAddress: Bytes!
+  lockedCollatral: BigInt!
+  collatralPrice: BigInt!
+  collatralLastPrice: BigInt!
+  debtAccumulatedRate: BigInt!
+  totalBorrowed: BigInt!
+  totalAvailable: BigInt!
+  tvl: BigInt!
+}
+
+type ProtocolStat @entity {
+  id: String!
+  totalSupply: BigInt!
+  tvl: BigInt!
+  fxdPrice: BigInt!
+  pools: [String!]!
+}

@@ -1,0 +1,70 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: CollateralPoolConfig
+    network: mainnet
+    source:
+      address: "0xDc5D216d3608e8f3fBC9b864a333C2e4f83E3bA9"
+      abi: CollateralPoolConfig
+      startBlock: 41142062
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - ProtocolStat
+      abis:
+        - name: CollateralPoolConfig
+          file: ./abis/CollateralPoolConfig.json
+      eventHandlers:
+        - event: LogInitCollateralPoolId(bytes32,uint256,uint256,uint256,address)
+          handler: handleLogInitCollateralPoolId
+        - event: LogSetDebtCeiling(indexed address,bytes32,uint256)
+          handler: handleLogSetDebtCeiling
+      file: ./src/collateral-pool-config.ts
+  - kind: ethereum
+    name: BookKeeper
+    network: mainnet
+    source:
+      address: "0x3f5d8AD43870797567bF55EB11546C0EC2dc9899"
+      abi: BookKeeper
+      startBlock: 41142062
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+        - ProtocolStat
+      abis:
+        - name: BookKeeper
+          file: ./abis/BookKeeper.json
+      eventHandlers:
+        - event: LogAdjustPosition(indexed address,bytes32,address,uint256,uint256,int256,int256)
+          handler: adjustPositionHandler
+        - event: LogSetTotalDebtCeiling(indexed address,uint256)
+          handler: setTotalDebtCeilingHanlder
+      file: ./src/bookkeeper.ts
+  - kind: ethereum
+    name: PriceOracle
+    network: mainnet
+    source:
+      address: "0xbd3059a47CD7d98D649CB69F6B32360Ec3888e59"
+      abi: PriceOracle
+      startBlock: 41142062
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Pool
+      abis:
+        - name: PriceOracle
+          file: ./abis/PriceOracle.json
+      eventHandlers:
+        - event: LogSetPrice(bytes32,bytes32,uint256)
+          handler: priceUpdateHandler
+      file: ./src/price-oracle.ts
