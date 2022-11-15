@@ -12,11 +12,11 @@ export function priceUpdateHandler(event: LogSetPrice): void {
         //Price is not set yet...
         if(pool.collatralPrice == Constants.DEFAULT_PRICE && 
             pool.collatralLastPrice == Constants.DEFAULT_PRICE){
-                pool.collatralPrice = pool.collatralLastPrice = event.params._priceWithSafetyMargin
+                pool.collatralPrice = pool.collatralLastPrice = event.params._rawPriceUint
         }else{
             //Assign the price to old price and then update the current price to latest.
             pool.collatralLastPrice = pool.collatralPrice
-            pool.collatralPrice = event.params._priceWithSafetyMargin
+            pool.collatralPrice = event.params._rawPriceUint
         }
         pool.save()
     }

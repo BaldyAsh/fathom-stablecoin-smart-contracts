@@ -1,5 +1,5 @@
 import { BigInt } from "@graphprotocol/graph-ts"
-import {LogAdjustPosition, LogSetTotalDebtCeiling} from "../generated/BookKeeper/BookKeeper"
+import {LogAdjustPosition, LogSetTotalDebtCeiling, stablecoinIssuedAmount} from "../generated/BookKeeper/BookKeeper"
 import {Pool, ProtocolStat } from "../generated/schema"
 import { Constants } from "./Utils/Constants"
 
@@ -10,7 +10,7 @@ export function adjustPositionHandler(
     let pool  = Pool.load(poolId.toHexString())
     if(pool != null){
         pool.lockedCollatral = pool.lockedCollatral.plus(event.params._addCollateral)
-        pool.totalBorrowed = pool.lockedCollatral.plus(event.params._addDebtShare)
+        // pool.totalBorrowed = pool.lockedCollatral.plus(event.params._addDebtShare)
         pool.totalAvailable = pool.debtCeiling.minus(pool.totalBorrowed)
         pool.tvl = pool.lockedCollatral.times(pool.collatralPrice.div(Constants.RAY))
         pool.save()
@@ -46,5 +46,16 @@ export function adjustPositionHandler(
         protocolStat.totalSupply = event.params._totalDebtCeiling //.div(Constants.RAD)
         protocolStat.pools = []
         protocolStat.save()
+    }
+  }
+
+  export function stablecoinIssuedAmountHandler(
+    event: stablecoinIssuedAmount
+  ): void {
+    let poolId = event.params._collateralPoolId
+    let pool  = Pool.load(poolId.toHexString())
+    if(pool != null){
+      pool.totalBorrowed = event.params._poolStablecoinIssued
+      pool.save()
     }
   }

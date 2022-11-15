@@ -6,9 +6,9 @@ dataSources:
     name: CollateralPoolConfig
     network: mainnet
     source:
-      address: "0xDc5D216d3608e8f3fBC9b864a333C2e4f83E3bA9"
+      address: "0xd90D74C5b5Bfc9E58B89D7522aD71C622660BEc3"
       abi: CollateralPoolConfig
-      startBlock: 41142062
+      startBlock: 41432504
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -29,9 +29,9 @@ dataSources:
     name: BookKeeper
     network: mainnet
     source:
-      address: "0x3f5d8AD43870797567bF55EB11546C0EC2dc9899"
+      address: "0x54A9a9111Bf60C7369Ab3ac61eF0a93682752E50"
       abi: BookKeeper
-      startBlock: 41142062
+      startBlock: 41432504
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -47,14 +47,16 @@ dataSources:
           handler: adjustPositionHandler
         - event: LogSetTotalDebtCeiling(indexed address,uint256)
           handler: setTotalDebtCeilingHanlder
+        - event: stablecoinIssuedAmount(uint256,bytes32,uint256)
+          handler: stablecoinIssuedAmountHandler
       file: ./src/bookkeeper.ts
   - kind: ethereum
     name: PriceOracle
     network: mainnet
     source:
-      address: "0xbd3059a47CD7d98D649CB69F6B32360Ec3888e59"
+      address: "0x686B7319637A65225Ab874BB951F430B536b99cA"
       abi: PriceOracle
-      startBlock: 41142062
+      startBlock: 41432504
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -65,6 +67,6 @@ dataSources:
         - name: PriceOracle
           file: ./abis/PriceOracle.json
       eventHandlers:
-        - event: LogSetPrice(bytes32,bytes32,uint256)
+        - event: LogSetPrice(bytes32,bytes32,uint256,uint256)
           handler: priceUpdateHandler
       file: ./src/price-oracle.ts
