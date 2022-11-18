@@ -15,6 +15,7 @@ type Pool @entity {
   lockedCollatral: BigInt!
   collatralPrice: BigDecimal!
   collatralLastPrice: BigDecimal!
+  priceWithSafetyMargin: BigDecimal!
   debtAccumulatedRate: BigInt!
   totalBorrowed: BigInt!
   totalAvailable: BigInt!
@@ -40,6 +41,8 @@ type Position @entity {
   lockedCollateral: BigInt!
   debtShare: BigInt!
   safetyBuffer: BigInt!
+  safetyBufferInPrecent: BigDecimal!
   tvl: BigDecimal!
   positionStatus: PositionStatus!
+  liquidtionPrice: BigDecimal!
 }

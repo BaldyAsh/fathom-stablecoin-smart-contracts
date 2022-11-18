@@ -30,8 +30,10 @@ export function newPositionHandler(event: LogNewPosition): void {
     position.lockedCollateral = BigInt.fromString('0')
     position.debtShare = BigInt.fromString('0')
     position.safetyBuffer= BigInt.fromString('1')
+    position.safetyBufferInPrecent= BigDecimal.fromString('0')
     position.tvl = BigDecimal.fromString('0')
     position.positionStatus = 'active'
+    position.liquidtionPrice = Constants.DEFAULT_PRICE
     position.save()
 
     //Save newly opened position in pool

@@ -18,6 +18,7 @@ export function priceUpdateHandler(event: LogSetPrice): void {
             pool.collatralLastPrice = pool.collatralPrice
             pool.collatralPrice = event.params._rawPriceUint.div(Constants.WAD).toBigDecimal()
         }
+        pool.priceWithSafetyMargin = Constants.divByRAY(event.params._priceWithSafetyMargin).toBigDecimal()
         pool.save()
 
         //Update the safety buffer for positions

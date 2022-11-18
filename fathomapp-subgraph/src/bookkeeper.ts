@@ -42,6 +42,25 @@ export function adjustPositionHandler(
         if(event.params._debtShare.equals(BigInt.fromI32(0))){
           position.positionStatus = 'closed'
         }
+
+        //Update the liquidation price
+        if(pool.priceWithSafetyMargin.gt(BigDecimal.fromString('0'))){
+           let collatralAvailableToWithdraw = (
+                                                pool.priceWithSafetyMargin.times(
+                                                    position.lockedCollateral.toBigDecimal()).minus(position.debtShare.toBigDecimal())
+                                                )
+                                                .div(pool.priceWithSafetyMargin)
+                                                
+           position.liquidtionPrice = pool.collatralPrice.minus(
+                                          (
+                                            collatralAvailableToWithdraw.times(pool.priceWithSafetyMargin))
+                                            .div(position.lockedCollateral.toBigDecimal()
+                                          )
+                                        )
+
+            position.safetyBufferInPrecent = collatralAvailableToWithdraw.div(position.lockedCollateral.toBigDecimal())
+        }
+
         position.save()
     } 
   }
