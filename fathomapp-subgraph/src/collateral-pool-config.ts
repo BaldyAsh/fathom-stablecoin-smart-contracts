@@ -18,17 +18,21 @@ export function handleLogInitCollateralPoolId(
     log.info('Creating new pool with id: {}',[poolId.toHexString()])
     pool = new Pool(poolId.toHexString())
     pool.poolName = poolId.toString()
-    pool.debtCeiling = event.params._debtCeiling //.div(Constants.RAD)
-    pool.liquidtionRatio = event.params._liquidtionRatio
-    pool.stabilityFeeRate = event.params._stabilityFeeRate
+    pool.debtCeiling = Constants.divByRAD(event.params._debtCeiling) 
+    pool.liquidtionRatio = Constants.divByRAY(event.params._liquidtionRatio)
+    pool.stabilityFeeRate = Constants.divByRAY(event.params._stabilityFeeRate)
     pool.tokenAdapterAddress = event.params._adapter
     pool.lockedCollatral = BigInt.fromI32(0)
-    pool.debtAccumulatedRate = BigInt.fromI32(0)
     pool.collatralPrice = Constants.DEFAULT_PRICE
     pool.collatralLastPrice = Constants.DEFAULT_PRICE
     pool.totalBorrowed = BigInt.fromI32(0)
-    pool.tvl = BigInt.fromI32(0)
-    pool.totalAvailable = event.params._debtCeiling
+    pool.tvl = BigDecimal.fromString('0')
+    pool.totalAvailable = Constants.divByRAD(event.params._debtCeiling) 
+    pool.positions = []
+
+    let collatralConfig = CollateralPoolConfig.bind(Address.fromString(Constants.ADDR_COLLATRAL_POOL_CONFIG))
+    pool.debtAccumulatedRate = collatralConfig.getDebtAccumulatedRate(poolId)
+
     pool.save()
 
     log.info('Saving pool information in protocol stat',[])
@@ -50,8 +54,8 @@ export function handleLogSetDebtCeiling(
   let poolId = event.params._collateralPoolId
   let pool  = Pool.load(poolId.toHexString())
   if(pool != null){
-    pool.debtCeiling = event.params._debtCeiling
-    pool.totalAvailable = event.params._debtCeiling
+    pool.debtCeiling =  Constants.divByRAD(event.params._debtCeiling) 
+    pool.totalAvailable = Constants.divByRAD(event.params._debtCeiling) 
     pool.save()
   }
 }
