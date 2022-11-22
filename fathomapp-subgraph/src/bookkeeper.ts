@@ -17,7 +17,7 @@ export function adjustPositionHandler(
     }  
 
 
-  // Update the total TVL in protcol by adding the TVLs from all pools
+    // Update the total TVL in protcol by adding the TVLs from all pools
     let stats  = ProtocolStat.load(Constants.FATHOM_STATS_KEY)
     let aggregatedTVL = BigDecimal.fromString('0')
     if(stats != null){
@@ -36,14 +36,14 @@ export function adjustPositionHandler(
     let position = Position.load(event.params._positionAddress.toHexString())
     if(position!=null && pool!=null){
         position.lockedCollateral =  event.params._lockedCollateral.div(Constants.WAD)
-        //TODO: Confirm if we can use stablecoinIssuedAmountHandler event
-        position.debtShare =  event.params._debtShare.div(Constants.WAD)
+        position.debtShare =  Constants.divByRAD(event.params._positionDebtValue)
         position.tvl = position.lockedCollateral.toBigDecimal().times(pool.collatralPrice)
         if(event.params._debtShare.equals(BigInt.fromI32(0))){
           position.positionStatus = 'closed'
         }
 
         //Update the liquidation price
+        //TODO: Can we put this calculationin smart contracts
         if(pool.priceWithSafetyMargin.gt(BigDecimal.fromString('0'))){
            let collatralAvailableToWithdraw = (
                                                 pool.priceWithSafetyMargin.times(
@@ -72,10 +72,13 @@ export function adjustPositionHandler(
     if(protocolStat == null){
         protocolStat = new ProtocolStat(Constants.FATHOM_STATS_KEY)
         protocolStat.tvl = BigDecimal.fromString('0')
-        protocolStat.totalSupply = Constants.divByRAD(event.params._totalDebtCeiling)
         protocolStat.pools = []
-        protocolStat.save()
+        protocolStat.totalSupply = BigInt.fromI32(0)
+    }else{
+      protocolStat.totalSupply = Constants.divByRAD(event.params._totalDebtCeiling)
     }
+    protocolStat.save()
+
   }
 
   export function stablecoinIssuedAmountHandler(

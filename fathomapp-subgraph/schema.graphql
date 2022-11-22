@@ -9,14 +9,14 @@ type Pool @entity {
   id: String!
   poolName: String!
   debtCeiling: BigInt!
-  liquidtionRatio: BigInt!
+  liquidtionRatio: BigDecimal!
   stabilityFeeRate: BigInt!
   tokenAdapterAddress: Bytes!
   lockedCollatral: BigInt!
   collatralPrice: BigDecimal!
   collatralLastPrice: BigDecimal!
   priceWithSafetyMargin: BigDecimal!
-  debtAccumulatedRate: BigInt!
+  debtAccumulatedRate: BigDecimal!
   totalBorrowed: BigInt!
   totalAvailable: BigInt!
   tvl: BigDecimal!
@@ -40,7 +40,7 @@ type Position @entity {
   positionId: BigInt!
   lockedCollateral: BigInt!
   debtShare: BigInt!
-  safetyBuffer: BigInt!
+  safetyBuffer: BigDecimal!
   safetyBufferInPrecent: BigDecimal!
   tvl: BigDecimal!
   positionStatus: PositionStatus!
