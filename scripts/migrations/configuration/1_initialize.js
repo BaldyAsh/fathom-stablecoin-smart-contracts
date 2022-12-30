@@ -37,6 +37,7 @@ module.exports = async function (deployer) {
     const collateralTokenAdapter = await artifacts.initializeInterfaceAt("CollateralTokenAdapter", "CollateralTokenAdapter");
     const fairLaunch = await artifacts.initializeInterfaceAt("FairLaunch", "FairLaunch");
     const fathomOraclePriceFeed = await artifacts.initializeInterfaceAt("FathomOraclePriceFeed", "FathomOraclePriceFeed");
+    const delayFathomOraclePriceFeed = await artifacts.initializeInterfaceAt("DelayFathomOraclePriceFeed", "DelayFathomOraclePriceFeed");
     const proxyWalletFactory = await artifacts.initializeInterfaceAt("ProxyWalletFactory", "ProxyWalletFactory");
 
     const addresses = getAddresses(deployer.networkId())
@@ -91,7 +92,7 @@ module.exports = async function (deployer) {
             systemDebtEngine.address,
             { gaslimit: 4050000 }
         ),
-        proxyWalletRegistry.initialize(proxyWalletFactory.address, { gasLimit: 1000000 }),
+        proxyWalletRegistry.initialize(delayFathomOraclePriceFeed.address, { gasLimit: 1000000 }),
         flashMintModule.initialize(
             stablecoinAdapter.address,
             systemDebtEngine.address,

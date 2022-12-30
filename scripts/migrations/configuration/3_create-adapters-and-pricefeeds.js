@@ -1,4 +1,5 @@
 const { BigNumber } = require("ethers");
+const fs = require('fs');
 
 const pools = require("../../common/collateral");
 const {getAddresses, Deployer} = require("../../common/addresses");
@@ -29,6 +30,16 @@ module.exports = async function (deployer) {
     ]
 
     await Promise.all(promises);
+
+    const fthmPriceFeed = await fathomOraclePriceFeedFactory.feeds(addresses.FTHM);
+    const wxdcPriceFeed = await fathomOraclePriceFeedFactory.feeds(addresses.WXDC);
+
+    const priceFeeds = {
+        fthmPriceFeed: fthmPriceFeed,
+        wxdcPriceFeed: wxdcPriceFeed
+    }
+
+    fs.writeFileSync('./price-feed-addresses.json', JSON.stringify(priceFeeds));
 
     async function createAdapter(poolId, tokenAddress, id) {
         await collateralTokenAdapterFactory.createAdapter(

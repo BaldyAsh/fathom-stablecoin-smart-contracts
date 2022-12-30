@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 pragma solidity 0.8.17;
 
-import "./FathomOraclePriceFeed.sol";
+import "./DelayFathomOraclePriceFeed.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
 
@@ -20,7 +20,7 @@ contract FathomOraclePriceFeedFactory is OwnableUpgradeable {
         address token1,
         address accessControlConfig
     ) external onlyOwner {
-        FathomOraclePriceFeed feed = FathomOraclePriceFeed(
+        DelayFathomOraclePriceFeed feed = DelayFathomOraclePriceFeed(
             Clones.clone(implementation)
         );
 
