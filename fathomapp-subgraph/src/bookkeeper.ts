@@ -39,19 +39,19 @@ export function adjustPositionHandler(
         position.debtShare =  Constants.divByRADToDecimal(event.params._positionDebtValue)
         position.tvl = position.lockedCollateral.times(pool.collateralPrice)
 
-        //TODO: Review 'closed' and 'liquidated' checks here
+        //If position debtshare and collateral both zero.. mark it as closed..
         if(position.debtShare.equals(BigDecimal.fromString('0')) && 
-                  position.positionStatus != 'closed' && 
-                  position.positionStatus != 'liquidated'){
+             position.lockedCollateral.equals(BigDecimal.fromString('0')) && 
+             position.positionStatus != 'closed'){
+              
+             position.positionStatus = 'closed'
 
-          position.positionStatus = 'closed'
-
-          // decrement user position count
-          let user = User.load(position.userAddress.toHexString())
-          if (user != null) {
-            user.activePositionsCount = user.activePositionsCount.minus(BigInt.fromString('1'))
-            user.save()
-          }
+              // decrement user position count
+              let user = User.load(position.userAddress.toHexString())
+              if (user != null) {
+                user.activePositionsCount = user.activePositionsCount.minus(BigInt.fromString('1'))
+                user.save()
+              }
         }
 
         //Update the liquidation price
