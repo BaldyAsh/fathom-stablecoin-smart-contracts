@@ -16,7 +16,7 @@ export function handleLogInitCollateralPoolId(
     pool = new Pool(poolId.toHexString())
     pool.poolName = poolId.toString()
     pool.debtCeiling = Constants.divByRAD(event.params._debtCeiling) 
-    pool.liquidationRatio = Constants.divByRAYToDecimal(event.params._liquidtionRatio)
+    pool.liquidationRatio = Constants.divByRAYToDecimal(event.params._liquidationRatio)
     pool.stabilityFeeRate = Constants.divByRAY(event.params._stabilityFeeRate)
     pool.tokenAdapterAddress = event.params._adapter
     pool.lockedCollateral = Constants.DEFAULT_PRICE
