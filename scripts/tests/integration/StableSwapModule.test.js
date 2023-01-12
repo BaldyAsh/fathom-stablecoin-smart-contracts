@@ -20,7 +20,7 @@ const CLOSE_FACTOR_BPS = BigNumber.from(5000)
 const LIQUIDATOR_INCENTIVE_BPS = BigNumber.from(12500)
 const TREASURY_FEE_BPS = BigNumber.from(2500)
 
-const ERC20Stable = artifacts.require('ERC20MintableStable.sol')
+const ERC20Stable = artifacts.require('ERC20MintableStableSwap.sol')
 
 
 const setup = async () => {
@@ -40,7 +40,7 @@ const setup = async () => {
     const collateralTokenAdapterAddress = await collateralTokenAdapterFactory.adapters(COLLATERAL_POOL_ID)
     const collateralTokenAdapter = await artifacts.initializeInterfaceAt("CollateralTokenAdapter", collateralTokenAdapterAddress);
 
-    const stablecoin = await artifacts.initializeInterfaceAt("ERC20MintableStable", "ERC20MintableStable");
+    const stablecoin = await artifacts.initializeInterfaceAt("ERC20MintableStableSwap", "ERC20MintableStableSwap");
     await stablecoin.mint(accounts[0], BigNumber.from("10000000000000000000000000000"), { gasLimit: 1000000 })
     const usdtAddr = await collateralTokenAdapter.collateralToken();
     const USDT = await artifacts.initializeInterfaceAt("ERC20Mintable", usdtAddr);
@@ -123,13 +123,11 @@ describe("StableSwapModule", () => {
         
         context("swap USDT to FXD", async () => {
             it("should success", async () => {
-                console.log(await fathomStablecoin.balanceOf(accounts[0]))
                 //accounts[5] setup
                 await USDT.approve(stableSwapModule.address, MaxUint256, { gasLimit: 1000000, from : accounts[5] })
                 await stablecoin.approve(stableSwapModule.address, MaxUint256, { gasLimit: 1000000, from: accounts[5] })
                 await USDT.mint(accounts[5], ethers.utils.parseEther("10000"), { gasLimit: 1000000 })
                 await stablecoin.mint(accounts[5], ethers.utils.parseEther("10000"), { gasLimit: 1000000 })
-                
                 await stableSwapModule.swapTokenToStablecoin(accounts[5],ethers.utils.parseEther("1000"), { gasLimit: 1000000, from: accounts[5] })
                 const balanceOfStablecoin = await stablecoin.balanceOf(accounts[5])
                 const balanceOfUSDT = await USDT.balanceOf(accounts[5])
@@ -149,7 +147,6 @@ describe("StableSwapModule", () => {
                 await stablecoin.approve(stableSwapModule.address, MaxUint256, { gasLimit: 1000000, from: accounts[5] })
                 await USDT.mint(accounts[5], ethers.utils.parseEther("10000"), { gasLimit: 1000000 })
                 await stablecoin.mint(accounts[5], ethers.utils.parseEther("10000"), { gasLimit: 1000000 })
-
                 await stableSwapModule.swapStablecoinToToken(accounts[5],ethers.utils.parseEther("1000"), { gasLimit: 1000000, from: accounts[5] })
                 const balanceOfStablecoin = await stablecoin.balanceOf(accounts[5])
                 const balanceOfUSDT = await USDT.balanceOf(accounts[5])
@@ -167,7 +164,6 @@ describe("StableSwapModule", () => {
                 // Swap 998 FXD to USDT
                 await fathomStablecoin.approve(stableSwapModule.address, MaxUint256, { gasLimit: 1000000 })
                 await stableSwapModule.swapStablecoinToToken(DeployerAddress,ethers.utils.parseEther("998"), { gasLimit: 1000000 })
-
                 // first swap = 1000 * 0.001 = 1 FXD
                 // second swap = 998 * 0.001 = 0.998 FXD
                 // total fee = 1 + 0.998 = 1.998
@@ -188,7 +184,6 @@ describe("StableSwapModule", () => {
                 ).to.be.revertedWith("_udpateAndCheckDailyLimit/daily-limit-exceeded")
                 await expect(stableSwapModule.swapStablecoinToToken(DeployerAddress,ethers.utils.parseEther("100"), { gasLimit: 1000000 })
                 ).to.be.revertedWith("_udpateAndCheckDailyLimit/daily-limit-exceeded")
-
                 const ONE_DAY = 86400
                 await TimeHelpers.increase(ONE_DAY+20)
                 //again swap after increasing timestamp
@@ -197,7 +192,6 @@ describe("StableSwapModule", () => {
                 await stableSwapModule.swapStablecoinToToken(DeployerAddress,ethers.utils.parseEther("5000"), { gasLimit: 1000000 })
                 await expect(stableSwapModule.swapTokenToStablecoin(DeployerAddress,ethers.utils.parseEther("1"), { gasLimit: 1000000 })
                 ).to.be.revertedWith("_udpateAndCheckDailyLimit/daily-limit-exceeded")
-                
                 //first swap = 10000 * 0.001 = 10
                 //second swap = 5000 * 0.001 = 5
                 //third swap = 5000 * 0.001 = 5
@@ -207,6 +201,17 @@ describe("StableSwapModule", () => {
                 expect(feeFromSwap).to.be.equal(ethers.utils.parseEther("20"))
             })
         })
-        
+    })
+
+    describe("#stableSwapEmergencyWithdraw", async () => {
+        it("Should emergency withdraw when paused", async() =>{
+            await expect(stableSwapModule.emergencyWithdraw(accounts[5])).to.be.reverted;
+            await stableSwapModule.pause();
+            await stableSwapModule.emergencyWithdraw(accounts[5]);
+            const balanceOfStablecoin = await stablecoin.balanceOf(accounts[5])
+            const balanceOfToken = await USDT.balanceOf(accounts[5])
+            expect(balanceOfStablecoin).to.be.equal(ethers.utils.parseEther("100000"))
+            expect(balanceOfToken).to.be.equal(ethers.utils.parseEther("100000"))
+        })
     })
 })

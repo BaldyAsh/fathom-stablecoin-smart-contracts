@@ -4,7 +4,7 @@ const { getProxy } = require("../../common/proxies");
 const { ethers } = require("ethers");
 
 const ERC20 = artifacts.require('ERC20Mintable.sol');
-const ERC20Stable = artifacts.require('ERC20MintableStable.sol')
+const ERC20Stable = artifacts.require('ERC20MintableStableSwap.sol')
 module.exports = async function (deployer) {
     const proxyFactory = await artifacts.initializeInterfaceAt("FathomProxyFactory", "FathomProxyFactory");
 

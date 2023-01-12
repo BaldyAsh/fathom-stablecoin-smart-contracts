@@ -48,6 +48,7 @@ contract StableSwapModule is PausableUpgradeable, ReentrancyGuardUpgradeable, IS
     event LogWithdrawFees(address indexed _account, uint256 _fees);
     event LogRemainingDailySwapAmount(uint256 _remainingDailySwapAmount);
     event LogStableSwapPauseState(bool _pauseState);
+    event LogEmergencyWithdraw(address indexed _account);
 
     modifier onlyOwner() {
         IAccessControlConfig _accessControlConfig = IAccessControlConfig(bookKeeper.accessControlConfig());
@@ -175,6 +176,15 @@ contract StableSwapModule is PausableUpgradeable, ReentrancyGuardUpgradeable, IS
     function unpause() external onlyOwnerOrGov {
         _unpause();
         emit LogStableSwapPauseState(false);
+    }
+
+    function emergencyWithdraw(address _account) external override nonReentrant onlyOwnerOrGov{
+        require(paused(),"emergencyWithdraw/not-paused");
+        tokenBalance[address(token)] = 0;
+        tokenBalance[address(stablecoin)] = 0;
+        token.safeTransfer(_account, token.balanceOf(address(this)));
+        address(stablecoin).safeTransfer(_account, address(stablecoin).balanceOf(address(this)));
+        emit LogEmergencyWithdraw(_account);
     }
 
     function _udpateAndCheckDailyLimit(uint256 _amount) internal {

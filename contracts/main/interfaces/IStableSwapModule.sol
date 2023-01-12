@@ -12,4 +12,6 @@ interface IStableSwapModule {
     function depositToken(address _token,uint256 _amount) external;
    
     function withdrawFees(address _account) external;
+
+    function emergencyWithdraw(address _account) external;
 }
