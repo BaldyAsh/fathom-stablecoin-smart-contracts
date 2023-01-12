@@ -1,9 +1,10 @@
 const pools = require("../../common/collateral");
 const { getAddresses } = require("../../common/addresses");
 const { getProxy } = require("../../common/proxies");
+const { ethers } = require("ethers");
 
 const ERC20 = artifacts.require('ERC20Mintable.sol');
-
+const ERC20Stable = artifacts.require('ERC20MintableStable.sol')
 module.exports = async function (deployer) {
     const proxyFactory = await artifacts.initializeInterfaceAt("FathomProxyFactory", "FathomProxyFactory");
 
@@ -36,9 +37,11 @@ module.exports = async function (deployer) {
     const proxyWalletFactory = await artifacts.initializeInterfaceAt("ProxyWalletFactory", "ProxyWalletFactory");
 
     const addresses = getAddresses(deployer.networkId())
-
+    const dailyLimit = ethers.utils.parseUnits("10000", "ether");
     await deployer.deploy(ERC20, "USDT", "USDT", { gas: 3050000 });
     const usdtAddr = ERC20.address;
+    await deployer.deploy(ERC20Stable,"StableCoin","SFC",{gas: 3050000})
+    
 
     const promises = [
         accessControlConfig.initialize({ gasLimit: 1000000 }),
@@ -102,10 +105,12 @@ module.exports = async function (deployer) {
             usdtAddr,
             { gasLimit: 1000000 }
         ),
+        //TODO in configuration mainnet with deposit token pair
         stableSwapModule.initialize(
-            authTokenAdapter.address,
-            stablecoinAdapter.address,
-            systemDebtEngine.address,
+            bookKeeper.address,
+            usdtAddr,
+            ERC20Stable.address,
+            dailyLimit,
             { gasLimit: 1000000 }
         ),
         flashMintArbitrager.initialize({ gasLimit: 1000000 }),
