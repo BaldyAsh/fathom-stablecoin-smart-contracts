@@ -7,7 +7,7 @@ const { formatBytes32String } = require("ethers/lib/utils");
 const WeiPerWad = BigNumber.from(`1${"0".repeat(18)}`)
 const WeiPerRay = BigNumber.from(`1${"0".repeat(27)}`)
 const WeiPerRad = BigNumber.from(`1${"0".repeat(45)}`)
-const COLLATERAL_POOL_ID_WXDC = formatBytes32String("WXDC")
+const COLLATERAL_POOL_ID_WXDC = formatBytes32String("XDC")
 const COLLATERAL_POOL_ID_FTHM = formatBytes32String("FTHM")
 const CLOSE_FACTOR_BPS = BigNumber.from(5000)   // <- 0.5
 const LIQUIDATOR_INCENTIVE_BPS = BigNumber.from(10500)  // <- 1.05
@@ -21,13 +21,13 @@ const rawdata = fs.readFileSync('../../../../addresses.json');
 let stablecoinAddress = JSON.parse(rawdata);
 
 const CollateralPoolConfig = artifacts.require('./main/stablecoin-core/config/CollateralPoolConfig.sol');
-const BookKeeper = artifacts.require('./main/stablecoin-core/BookKeeper.sol');
-const SimplePriceFeed = artifacts.require('./tests/SimplePriceFeed.sol');
-const PriceOracle = artifacts.require('./main/stablecoin-core/PriceOracle.sol');
+// const BookKeeper = artifacts.require('./main/stablecoin-core/BookKeeper.sol');
+// const SimplePriceFeed = artifacts.require('./tests/SimplePriceFeed.sol');
+// const PriceOracle = artifacts.require('./main/stablecoin-core/PriceOracle.sol');
 
 module.exports = async function(deployer) {
 
-  console.log(">> Resetting collateral-pool-config with LTV");
+  console.log(`>> Resetting collateral-pool-config with LTV: ${stablecoinAddress.collateralPoolConfig} `);
   const collateralPoolConfig = await CollateralPoolConfig.at(stablecoinAddress.collateralPoolConfig);
 
   // const bookKeeper = await BookKeeper.at(stablecoinAddress.bookKeeper);
@@ -44,7 +44,7 @@ module.exports = async function(deployer) {
   // console.log("PriceWithSafetyMargin FTHM is " + PriceWithSafetyMarginFTHM1);
 
   await collateralPoolConfig.setLiquidationRatio(COLLATERAL_POOL_ID_WXDC, LIQUIDATIONRATIO);
-  await collateralPoolConfig.setLiquidationRatio(COLLATERAL_POOL_ID_FTHM, LIQUIDATIONRATIO);
+  // await collateralPoolConfig.setLiquidationRatio(COLLATERAL_POOL_ID_FTHM, LIQUIDATIONRATIO);
 
   // const LTV3 = await collateralPoolConfig.getLiquidationRatio(COLLATERAL_POOL_ID_WXDC);
   // console.log("Liquidation ratio WXDC AFTER LTV change is " + LTV3);
