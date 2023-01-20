@@ -55,3 +55,21 @@ type Position @entity {
   blockTimestamp: BigInt! 
   transaction: Bytes!
 }
+
+type SwapEvent @entity{
+  id: String!
+  fee: BigInt!
+  owner: Bytes!
+  value: BigInt!
+  isStablecoinToTokenSwap: Boolean!
+  isTokenToStablecoinSwap: Boolean!
+}
+
+type StableSwapStat @entity{
+  id: ID!
+  totalTokenToStablecoinSwapEvents: BigInt!
+  totalStablecoinToTokenSwapEvents: BigInt!
+  remainingDailySwapAmount: BigInt!
+  tokenToStablecoinTotalSwapValue: BigInt!
+  stablecoinToTokenTotalSwapValue: BigInt!
+}

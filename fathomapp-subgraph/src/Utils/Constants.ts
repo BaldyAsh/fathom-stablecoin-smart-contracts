@@ -6,6 +6,8 @@ export class Constants{
 
     public static ADDR_COLLATERAL_POOL_CONFIG:string = '0xf004fF88E6272dAFf8d062124e30021CD9e5250F'
     public static ADDR_POSITION_MANAGER:string = '0xfeFDf4Cb104BC272Ba0602f4588438551e7067F6'
+    //TODO:
+    public static ADDR_STABLE_SWAP:string = '0x5AF507681d8Ac6f1aA720370Ca0B0F531A207289'
 
     public static WAD:BigInt = BigInt.fromI64(10**18)
     public static RAY:BigInt = BigInt.fromI64( 10**27)

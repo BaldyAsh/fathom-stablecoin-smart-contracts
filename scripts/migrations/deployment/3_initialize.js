@@ -11,7 +11,6 @@ const FathomStablecoinProxyActions = artifacts.require('FathomStablecoinProxyAct
 const {Deployer} = require("../../common/addresses");
 
 const TREASURY_FEE_BPS = BigNumber.from(5000) // <- 0.5
-const ERC20Stable = artifacts.require('ERC20MintableStableSwap.sol')
 
 module.exports = async function (deployer) {
     const proxyFactory = await artifacts.initializeInterfaceAt("FathomProxyFactory", "FathomProxyFactory");

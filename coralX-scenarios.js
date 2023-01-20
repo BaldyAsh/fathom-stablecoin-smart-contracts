@@ -9,6 +9,10 @@ module.exports = {
     ['execute', '--path', 'scripts/migrations/deployment', '--network', 'apothem'],
     ['execute', '--path', 'scripts/migrations/configuration', '--network', 'apothem']
   ],
+  deployApothemStableswap: [
+    ['compile'],
+    ['execute', '--path', 'scripts/deploy-stableswap', '--network', 'apothem'],
+  ],
   deployTokensLocal: [
     ['compile'],
     ['execute', '--path', 'scripts/migrations/collateral-tokens', '--network', 'development']

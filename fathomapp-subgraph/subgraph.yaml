@@ -117,3 +117,27 @@ dataSources:
         - event: LogFixedSpreadLiquidate(indexed bytes32,uint256,uint256,indexed address,uint256,uint256,indexed address,address,uint256,uint256,uint256,uint256)
           handler: positionLiquidationHandler
       file: ./src/liquidation-strategy.ts
+  - kind: ethereum
+    name: StableSwapModule
+    network: mainnet
+    source:
+      address: "0x5AF507681d8Ac6f1aA720370Ca0B0F531A207289" 
+      abi: StableSwapModule
+      startBlock: 42355335
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Position
+      abis:
+        - name: StableSwapModule
+          file: ./abis/StableSwapModule.json
+      eventHandlers:
+        - event: LogRemainingDailySwapAmount(uint256)
+          handler: remainingDailySwapLimitHandler
+        - event: LogSwapStablecoinToToken(indexed address,uint256,uint256)
+          handler: swapStablecoinToTokenHandler
+        - event: LogSwapTokenToStablecoin(indexed address,uint256,uint256)
+          handler: swapTokenToStablecoinHandler
+      file: ./src/stable-swap.ts
