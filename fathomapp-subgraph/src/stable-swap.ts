@@ -25,6 +25,9 @@ export function swapStablecoinToTokenHandler(
         swapEvent.value = event.params._value;
         swapEvent.isTokenToStablecoinSwap = false
         swapEvent.isStablecoinToTokenSwap = true
+        swapEvent.blockNumber = event.block.number
+        swapEvent.blockTimestamp = event.block.timestamp
+        swapEvent.transaction = event.transaction.hash
         stableSwapStat.stablecoinToTokenTotalSwapValue = stableSwapStat.stablecoinToTokenTotalSwapValue.plus(event.params._value);
         swapEvent.save()
         stableSwapStat.save()
@@ -41,6 +44,9 @@ export function swapTokenToStablecoinHandler(
         swapEvent.value = event.params._value;
         swapEvent.isTokenToStablecoinSwap = true
         swapEvent.isStablecoinToTokenSwap = false
+        swapEvent.blockNumber = event.block.number
+        swapEvent.blockTimestamp = event.block.timestamp
+        swapEvent.transaction = event.transaction.hash
         stableSwapStat.tokenToStablecoinTotalSwapValue = stableSwapStat.tokenToStablecoinTotalSwapValue.plus(event.params._value)
         swapEvent.save()
         stableSwapStat.save()

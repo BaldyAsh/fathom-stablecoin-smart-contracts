@@ -63,6 +63,9 @@ type SwapEvent @entity{
   value: BigInt!
   isStablecoinToTokenSwap: Boolean!
   isTokenToStablecoinSwap: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt! 
+  transaction: Bytes!
 }
 
 type StableSwapStat @entity{
