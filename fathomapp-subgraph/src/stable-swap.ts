@@ -19,7 +19,13 @@ export function swapStablecoinToTokenHandler(
     ): void {
         let stableSwapStat = getOrCreateStableSwapStat()
         stableSwapStat.totalStablecoinToTokenSwapEvents = stableSwapStat.totalStablecoinToTokenSwapEvents.plus(BigInt.fromString('1'))
-        let swapEvent = new SwapEvent(stableSwapStat.totalStablecoinToTokenSwapEvents.toString())
+
+        const swapEventId = event.transaction.hash
+            .toHexString()
+            .concat('-')
+            .concat(event.transactionLogIndex.toString())
+
+        let swapEvent = new SwapEvent(swapEventId)
         swapEvent.fee = event.params._fee;
         swapEvent.owner = event.params._owner;
         swapEvent.value = event.params._value;
@@ -38,7 +44,13 @@ export function swapTokenToStablecoinHandler(
     ): void {
         let stableSwapStat = getOrCreateStableSwapStat()
         stableSwapStat.totalTokenToStablecoinSwapEvents = stableSwapStat.totalTokenToStablecoinSwapEvents.plus(BigInt.fromString('1'))
-        let swapEvent = new SwapEvent(stableSwapStat.totalTokenToStablecoinSwapEvents.toString())
+
+        const swapEventId = event.transaction.hash
+            .toHexString()
+            .concat('-')
+            .concat(event.transactionLogIndex.toString())
+
+        let swapEvent = new SwapEvent(swapEventId)
         swapEvent.fee = event.params._fee;
         swapEvent.owner = event.params._owner;
         swapEvent.value = event.params._value;
