@@ -8,7 +8,7 @@ const WeiPerRay = BigNumber.from(`1${"0".repeat(27)}`)
 const WeiPerRad = BigNumber.from(`1${"0".repeat(45)}`)
 
 const CLOSE_FACTOR_BPS = BigNumber.from(2500)   // <- 0.25
-const LIQUIDATOR_INCENTIVE_BPS = BigNumber.from(10500)  // <- 1.05
+const LIQUIDATOR_INCENTIVE_BPS = BigNumber.from(11000)  // <- 1.10
 const TREASURY_FEE_BPS = BigNumber.from(8000) // <- 0.8
 const STABILITY_FEE = BigNumber.from("1000000000627937192491029811")
 const LIQUIDATIONRATIO_75 = WeiPerRay.mul(133).div(100).toString(); // LTV 75%
