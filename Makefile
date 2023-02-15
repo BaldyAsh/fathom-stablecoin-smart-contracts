@@ -340,23 +340,7 @@ closePositionFull:
 
 openCrazy:
 	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
+
+SSMConfig:
 	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	
 
