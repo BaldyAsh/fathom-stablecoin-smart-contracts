@@ -51,8 +51,8 @@ const proxyFactory = await artifacts.initializeInterfaceAt("FathomProxyFactory",
   const proxyWalletRegistry = await getProxy(proxyFactory, "ProxyWalletRegistry");
 
   // calling setPrice to update price of collateral
-  const priceOracle = await artifacts.initializeInterfaceAt("PriceOracle", stablecoinAddress.priceOracle);
-  await priceOracle.setPrice(COLLATERAL_POOL_ID);
+  // const priceOracle = await artifacts.initializeInterfaceAt("PriceOracle", stablecoinAddress.priceOracle);
+  // await priceOracle.setPrice(COLLATERAL_POOL_ID);
 
   await proxyWalletRegistry.build(deployerEOA)
   const proxyWalletapothemDeployerTest = await proxyWalletRegistry.proxies(deployerEOA);
