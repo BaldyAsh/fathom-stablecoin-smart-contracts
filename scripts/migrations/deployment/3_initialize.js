@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+require("dotenv").config();
 const pools = require("../../common/collateral");
 const { getAddresses } = require("../../common/addresses");
 const { getProxy } = require("../../common/proxies");
@@ -35,7 +35,8 @@ module.exports = async function (deployer) {
     const fathomStablecoinProxyActions = await artifacts.initializeInterfaceAt("FathomStablecoinProxyActions", "FathomStablecoinProxyActions");
 
     const addresses = getAddresses(deployer.networkId())
-    const dailyLimit = ethers.utils.parseUnits("10000", "ether");
+    const SSMDailyLimit = process.env.SSMDailyLimit;
+    const dailyLimit = ethers.utils.parseUnits(SSMDailyLimit, "ether");
 
     const promises = [
         accessControlConfig.initialize({ gasLimit: 1000000 }),

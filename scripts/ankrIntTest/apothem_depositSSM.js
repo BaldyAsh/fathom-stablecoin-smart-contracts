@@ -2,64 +2,36 @@ const fs = require('fs');
 const rawdata = fs.readFileSync('../../addresses.json');
 let stablecoinAddress = JSON.parse(rawdata);
 
+const { MaxUint256 } = require("@ethersproject/constants");
+
 require("dotenv").config();
-const deployerEOA = process.env.DEPLOYER_EOA;
-const XDC_COL = process.env.XDC_COL;
-const FXD = process.env.FXD;
+const USDDepositAmount = process.env.FXDinSSM;
+const FXDDepositAmount = process.env.FXDinSSM;
 const { ethers } = require("ethers");
-const { getProxy } = require("../common/proxies");
+
+const { getAddresses } = require("../common/addresses");
 
 const { formatBytes32String } = require("ethers/lib/utils");
 
 const COLLATERAL_POOL_ID = formatBytes32String("XDC");
 
 
-const { WeiPerWad } = require("../tests/helper/unit");
-
-
-const openPositionAndDraw = async (proxyWallet, collateral_pool_id, stablecoinAmount) => {
-
-
-  const proxyFactory = await artifacts.initializeInterfaceAt("FathomProxyFactory", "FathomProxyFactory");
-const positionManager = await getProxy(proxyFactory, "PositionManager");
-const stablecoinAdapter = await getProxy(proxyFactory, "StablecoinAdapter");
-const stabilityFeeCollector = await getProxy(proxyFactory, "StabilityFeeCollector");
-const xdcAdapter = await getProxy(proxyFactory, "AnkrCollateralAdapter");
-
-  const openLockXDCAndDrawAbi = [
-      "function openLockXDCAndDraw(address _manager, address _stabilityFeeCollector, address _xdcAdapter, address _stablecoinAdapter, bytes32 _collateralPoolId, uint256 _stablecoinAmount, bytes calldata _data)"
-  ];
-  const openLockTokenAndDrawIFace = new ethers.utils.Interface(openLockXDCAndDrawAbi);
-  const openPositionCall = openLockTokenAndDrawIFace.encodeFunctionData("openLockXDCAndDraw", [
-      positionManager.address,
-      stabilityFeeCollector.address,
-      xdcAdapter.address,
-      stablecoinAdapter.address,
-      collateral_pool_id,
-      stablecoinAmount, // wad
-      "0x00",
-  ])
-                                                              //2023 feb 15th, this xdc amount and fxd amount also better be adjusted in .env or external json file
-  await proxyWallet.execute(openPositionCall, { value: ethers.constants.WeiPerEther.mul(parseInt(XDC_COL,10)), gasLimit: 2000000})
-                                                                                                        // how much XDC to collateralize
-}
 
 module.exports = async function(deployer) {
 
-const proxyFactory = await artifacts.initializeInterfaceAt("FathomProxyFactory", "FathomProxyFactory");
+  const addresses = getAddresses(deployer.networkId())
 
-  const proxyWalletRegistry = await getProxy(proxyFactory, "ProxyWalletRegistry");
+  const stableSwapModule = await artifacts.initializeInterfaceAt("StableSwapModule", stablecoinAddress.stableSwapModule);
 
-  calling setPrice to update price of collateral
-  const priceOracle = await artifacts.initializeInterfaceAt("PriceOracle", stablecoinAddress.priceOracle);
-  await priceOracle.setPrice(COLLATERAL_POOL_ID);
+  // console.log(typeof(addresses.USD));
+  // console.log(typeof(stablecoinAddress.fathomStablecoin));
+  const USD = await artifacts.initializeInterfaceAt("ERC20Mintable", addresses.USD);
+  const fathomStablecoin = await artifacts.initializeInterfaceAt("ERC20Mintable", stablecoinAddress.fathomStablecoin);
 
-  await proxyWalletRegistry.build(deployerEOA)
-  const proxyWalletapothemDeployerTest = await proxyWalletRegistry.proxies(deployerEOA);
-  
-  const proxyWalletAsDeployer = await artifacts.initializeInterfaceAt("ProxyWallet", proxyWalletapothemDeployerTest);
-  const proxyWalletAsDeployerOwner = await proxyWalletAsDeployer.owner();
-  console.log(deployerEOA == proxyWalletAsDeployerOwner);
-                                                                                  //how much FXD to borrow
-  await openPositionAndDraw(proxyWalletAsDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(parseInt(FXD,10)));
+  await USD.approve(stableSwapModule.address,MaxUint256, { gasLimit: 1000000 })
+  await fathomStablecoin.approve(stableSwapModule.address,MaxUint256, { gasLimit: 1000000 })
+
+  await stableSwapModule.depositToken(addresses.USD, ethers.constants.WeiPerEther.mul(parseInt(USDDepositAmount,10)),{ gasLimit: 1000000 })
+  await stableSwapModule.depositToken(stablecoinAddress.fathomStablecoin , ethers.constants.WeiPerEther.mul(parseInt(FXDDepositAmount,10)),{ gasLimit: 1000000 })
+
 };
