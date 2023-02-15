@@ -29,7 +29,7 @@ module.exports = {
       host: "https://erpc.apothem.network/",
       // host: "https://apothem.xdcrpc.com/",
       // private_key: fs.readFileSync("./privateKey").toString(),
-      private_key: process.env.GORLI_DEPLOYER,
+      private_key: process.env.DEPLOYER_PRIVATEKEY,
       gasPrice: '0x3b9aca00',
     },
     // fromEnv: {
