@@ -25,9 +25,9 @@ module.exports = async function (deployer) {
     const ankrCollateralAdapter = await getProxy(proxyFactory, "AnkrCollateralAdapter");
 
     const debtCeilingSetUpTotal = WeiPerRad.mul(10000000);
-    const debtCeilingSetUp = WeiPerRad.mul(10000000).div(2);
+    const debtCeilingSetUp = WeiPerRad.mul(10000000);
 
-    await simplePriceFeed.setPrice(WeiPerWad.mul(1), { gasLimit: 2000000 });
+    // await simplePriceFeed.setPrice(WeiPerWad.mul(1), { gasLimit: 2000000 });
 
     const promises = [
         initPool(pools.XDC, ankrCollateralAdapter.address, delayFathomOraclePriceFeed.address, LIQUIDATIONRATIO_75),
