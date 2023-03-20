@@ -20,20 +20,21 @@ const wipeAllAndUnlockXDC = async (positionId, collateralAmount) => {
   ];
   const wipeAllAndUnlockXDCIFace = new ethers.utils.Interface(wipeAllAndUnlockXDCAbi);
   const closePositionCall = wipeAllAndUnlockXDCIFace.encodeFunctionData("wipeAllAndUnlockXDC", [
-    "0xF1760BE07B3c3162Ff1782D4a619E8Fc2028a807", //Position Manager
-    "0xd28a2B214F6b8047148e3CA323357766EC124061", //AnkrCollateralAdapter
-    "0x0C57BeB61545B7899f2C6fCD5ECbC6c5D29be6cc", // StablecoinAdapter
+      "0xc0d55c7EC712786d6d474F53F1bde91E0D25D514", //Position Manager
+      "0xa903235C2f95D4a2a1Ece086a5eFad872d19aF7F", // collateralTokenAdapter
+      "0xc1690b7Ef55D15F5cBc488f07dDb5017b6F66db7", // StablecoinAdapter
       positionId,
       collateralAmount, // wad
       "0x00",
   ])
 
+  console.log("below is the positionFullClosure script");
   console.log(closePositionCall);
 
 }
 
 module.exports = async function(deployer) {
 
-  await wipeAllAndUnlockXDC(5, WeiPerWad.mul(10));
+  await wipeAllAndUnlockXDC(1, WeiPerWad.mul(20));
   
 };

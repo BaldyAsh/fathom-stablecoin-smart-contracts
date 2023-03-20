@@ -22,10 +22,10 @@ const openPositionAndDraw = async (collateral_pool_id, stablecoinAmount) => {
   ];
   const openLockTokenAndDrawIFace = new ethers.utils.Interface(openLockXDCAndDrawAbi);
   const openPositionCall = openLockTokenAndDrawIFace.encodeFunctionData("openLockXDCAndDraw", [
-      "0xF1760BE07B3c3162Ff1782D4a619E8Fc2028a807", //Position Manager
-      "0x37e52CF56C9a20330A544434210A39338958223D", // StabilityFeeCollector
-      "0xd28a2B214F6b8047148e3CA323357766EC124061", //AnkrCollateralAdapter
-      "0x0C57BeB61545B7899f2C6fCD5ECbC6c5D29be6cc", // StablecoinAdapter
+      "0xc0d55c7EC712786d6d474F53F1bde91E0D25D514", //Position Manager
+      "0x31F550A517C5951E33A6927Baf6843BD86927a0f", // StabilityFeeCollector
+      "0xa903235C2f95D4a2a1Ece086a5eFad872d19aF7F", // collateralTokenAdapter
+      "0xc1690b7Ef55D15F5cBc488f07dDb5017b6F66db7", // StablecoinAdapter
       collateral_pool_id,
       stablecoinAmount, // wad
       "0x00",
@@ -34,8 +34,10 @@ const openPositionAndDraw = async (collateral_pool_id, stablecoinAmount) => {
   console.log(openPositionCall);
   // console.log("here2");
   // await proxyWallet.execute2(fathomStablecoinProxyActions.address, openPositionCall, { from: from, value: ethers.constants.WeiPerEther })
+  // coralX execute --network development --path scripts/ankrIntTest/positionOpening_getEncodedData.js
+
 }
 
 module.exports = async function(deployer) {
-  await openPositionAndDraw(COLLATERAL_POOL_ID, WeiPerWad.mul(50));
+  await openPositionAndDraw(COLLATERAL_POOL_ID, WeiPerWad.mul(10));
 };
