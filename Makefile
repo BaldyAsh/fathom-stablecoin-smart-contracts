@@ -331,8 +331,13 @@ newStrategy:
 
 # Adding priceOracle address to liquidation-engine's storage
 	coralX execute --network development --path scripts/deployment/5_liquidation-engine/config/config_liquidation-engine.js
-    
 
+fullCycle:
+	coralX compile
+	coralX execute --network development --path scripts/ankrIntTest/WXDC.js  
+	coralX scenario --run deployLocal
+	# coralX execute --network development --path scripts/ankrIntTest/0_openAndCloseFull.js
+	coralX execute --network development --path scripts/ankrIntTest/0_openAndClosePartial.js
 makeWallet:
 	coralX execute --network development --path scripts/ankrIntTest/positionOpening.js
 closePositionFull:

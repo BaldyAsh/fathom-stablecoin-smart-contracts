@@ -35,6 +35,8 @@ const wipeAllAndUnlockXDC = async (positionId, collateralAmount) => {
 
 module.exports = async function(deployer) {
 
-  await wipeAllAndUnlockXDC(1, WeiPerWad.mul(20));
+  await wipeAllAndUnlockXDC(2, WeiPerWad.mul(20));
+  console.log("below is poolId")
+  console.log(COLLATERAL_POOL_ID);
   
 };

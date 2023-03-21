@@ -443,7 +443,7 @@ contract FathomStablecoinProxyActions {
         adjustPosition(_manager, _positionId, -_safeToInt(_collateralAmount), -int256(_debtShare), _xdcAdapter, _data); // Paybacks debt to the CDP and unlocks WXDC amount from it
         if(_collateralAmount > 0) {
             moveCollateral(_manager, _positionId, address(this), _collateralAmount, _xdcAdapter, _data); // Moves the amount from the CDP positionAddress to proxy's address
-            IGenericTokenAdapter(_xdcAdapter).withdraw(msg.sender, _collateralAmount, _data);
+            IGenericTokenAdapter(_xdcAdapter).withdraw(address(this), _collateralAmount, _data);
             IWXDC(address(IGenericTokenAdapter(_xdcAdapter).collateralToken())).withdraw(_collateralAmount); // Converts WXDC to XDC
             SafeToken.safeTransferETH(msg.sender, _collateralAmount); // Send XDC to user
         }

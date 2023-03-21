@@ -24,7 +24,7 @@ contract WXDC {
   }
 
   function withdraw(uint256 wad) public {
-    require(balanceOf[msg.sender] >= wad, "insufficent balance");
+    require(balanceOf[msg.sender] >= wad, "insufficent balance/withdraw");
     balanceOf[msg.sender] -= wad;
     payable(msg.sender).transfer(wad);
     emit Withdrawal(msg.sender, wad);
@@ -49,7 +49,7 @@ contract WXDC {
     address dst,
     uint256 wad
   ) public returns (bool) {
-    require(balanceOf[src] >= wad, "insufficent balance");
+    require(balanceOf[src] >= wad, "insufficent balance/transferFrom");
 
     if (src != msg.sender && allowance[src][msg.sender] != type(uint).max) {
       require(allowance[src][msg.sender] >= wad, "insufficent allowance");
