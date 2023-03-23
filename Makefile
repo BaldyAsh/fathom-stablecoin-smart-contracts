@@ -337,7 +337,9 @@ fullCycle:
 	coralX execute --network development --path scripts/ankrIntTest/WXDC.js  
 	coralX scenario --run deployLocal
 	# coralX execute --network development --path scripts/ankrIntTest/0_openAndCloseFull.js
-	coralX execute --network development --path scripts/ankrIntTest/0_openAndClosePartial.js
+	# coralX execute --network development --path scripts/ankrIntTest/0_openAndClosePartial.js
+	coralX execute --network development --path scripts/ankrIntTest/3_openAndCloseAndTopUpLiquidate.js
+
 makeWallet:
 	coralX execute --network development --path scripts/ankrIntTest/positionOpening.js
 closePositionFull:
