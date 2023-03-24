@@ -236,30 +236,39 @@ contract FixedSpreadLiquidationStrategy is PausableUpgradeable, ReentrancyGuardU
 
         _adapter.onMoveCollateral(_positionAddress, address(this), info.collateralAmountToBeLiquidated, abi.encode(0));
 
-        if (info.treasuryFees > 0) {
-            bookKeeper.moveCollateral(_collateralPoolId, address(this), address(systemDebtEngine), info.treasuryFees);
-            _adapter.onMoveCollateral(address(this), address(systemDebtEngine), info.treasuryFees, abi.encode(0));
-        }
-        _adapter.withdraw(_collateralRecipient, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), abi.encode(0));
-
-        if (
+if (
             flashLendingEnabled == 1 &&
             _data.length > 0 &&
             _collateralRecipient != address(bookKeeper) &&
             _collateralRecipient != address(liquidationEngine)
         ) {
+            //there should be ERC165 function selector check added to above condition
+             bookKeeper.moveCollateral(
+            _collateralPoolId,
+            address(this),
+            _collateralRecipient,
+            info.collateralAmountToBeLiquidated.sub(info.treasuryFees)
+            );
+            _adapter.onMoveCollateral(
+            address(this),
+            _collateralRecipient,
+            info.collateralAmountToBeLiquidated.sub(info.treasuryFees),
+            abi.encode(0)
+            );
             IFlashLendingCallee(_collateralRecipient).flashLendingCall(
                 msg.sender,
                 info.actualDebtValueToBeLiquidated,
                 info.collateralAmountToBeLiquidated.sub(info.treasuryFees),
                 _data
             );
+        } else {
+            _adapter.withdraw(_collateralRecipient, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), abi.encode(0));
+            address _stablecoin = address(stablecoinAdapter.stablecoin());
+            _stablecoin.safeTransferFrom(_liquidatorAddress, address(this), ((info.actualDebtValueToBeLiquidated / RAY) + 1));
+            _stablecoin.safeApprove(address(stablecoinAdapter), ((info.actualDebtValueToBeLiquidated / RAY) + 1));
+            stablecoinAdapter.depositRAD(_liquidatorAddress, info.actualDebtValueToBeLiquidated, abi.encode(0));
         }
 
-        address _stablecoin = address(stablecoinAdapter.stablecoin());
-        _stablecoin.safeTransferFrom(_liquidatorAddress, address(this), ((info.actualDebtValueToBeLiquidated / RAY) + 1));
-        _stablecoin.safeApprove(address(stablecoinAdapter), ((info.actualDebtValueToBeLiquidated / RAY) + 1));
-        stablecoinAdapter.depositRAD(_liquidatorAddress, info.actualDebtValueToBeLiquidated, abi.encode(0));
         bookKeeper.moveStablecoin(_liquidatorAddress, address(systemDebtEngine), info.actualDebtValueToBeLiquidated);
 
         info.positionDebtShare = _positionDebtShare;
