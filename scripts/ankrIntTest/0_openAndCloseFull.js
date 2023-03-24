@@ -40,7 +40,7 @@ const openPositionAndDraw = async (proxyWallet, from, collateral_pool_id, stable
       stablecoinAdapter.address,
       collateral_pool_id,
       stablecoinAmount, // wad
-      ethers.utils.defaultAbiCoder.encode(["address"], [from]),
+      "0x00",
   ])
   console.log("here2");
   await proxyWallet.execute(openPositionCall, { from: from, value: ethers.constants.WeiPerEther.mul(20) })

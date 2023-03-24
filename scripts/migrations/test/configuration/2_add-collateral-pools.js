@@ -21,13 +21,15 @@ module.exports = async function (deployer) {
     const collateralPoolConfig = await getProxy(proxyFactory, "CollateralPoolConfig")
     const priceOracle = await getProxy(proxyFactory, "PriceOracle")
     const ankrCollateralAdapter = await getProxy(proxyFactory, "AnkrCollateralAdapter");
+    const delayFathomOraclePriceFeed = await getProxy(proxyFactory, "DelayFathomOraclePriceFeed");
 
     await simplePriceFeed.initialize(accessControlConfig.address, { gasLimit: 5000000 });
 
     const debtCeilingSetUpTotal = WeiPerRad.mul(100000000000000);
     const debtCeilingSetUp = WeiPerRad.mul(100000000000000);
-
+    await simplePriceFeed.setPoolId(pools.XDC);
     await simplePriceFeed.setPrice(WeiPerWad.mul(1), { gasLimit: 2000000 });
+    await delayFathomOraclePriceFeed.peekPrice({ gasLimit: 2000000 });
 
     const promises = [
         initPool(pools.XDC, ankrCollateralAdapter.address, simplePriceFeed.address, WeiPerRay)

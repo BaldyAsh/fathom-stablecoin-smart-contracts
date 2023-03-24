@@ -28,13 +28,10 @@ module.exports = async function (deployer) {
     const stableSwapModule = await getProxy(proxyFactory, "StableSwapModule");
     const flashMintArbitrager = await getProxy(proxyFactory, "FlashMintArbitrager");
     const bookKeeperFlashMintArbitrager = await getProxy(proxyFactory, "BookKeeperFlashMintArbitrager");
-    //2023 Mar 20 commented out
-    // const delayFathomOraclePriceFeed = await getProxy(proxyFactory, "DelayFathomOraclePriceFeed");
-    // const dexPriceOracle = await getProxy(proxyFactory, "DexPriceOracle");
+    const delayFathomOraclePriceFeed = await getProxy(proxyFactory, "DelayFathomOraclePriceFeed");
+    const dexPriceOracle = await getProxy(proxyFactory, "DexPriceOracle");
     const collateralTokenAdapter = await getProxy(proxyFactory, "CollateralTokenAdapter");
     const proxyActionsStorage = await getProxy(proxyFactory, "ProxyActionsStorage");
-    //2023 Mar 20 commented out
-    const simplePriceFeed = await getProxy(proxyFactory, "SimplePriceFeed");
     const fathomStablecoinProxyActions = await artifacts.initializeInterfaceAt("FathomStablecoinProxyActions", "FathomStablecoinProxyActions");
 
     const addresses = getAddresses(deployer.networkId())
@@ -106,11 +103,8 @@ module.exports = async function (deployer) {
         flashMintArbitrager.initialize({ gasLimit: 1000000 }),
         bookKeeperFlashMintArbitrager.initialize(fathomStablecoin.address, { gasLimit: 1000000 }),
 
-        //2023 Mar 20 commented out
-        // dexPriceOracle.initialize(addresses.DEXFactory, { gasLimit: 1000000 }),
-        //2023 Mar 20 added
-        simplePriceFeed.initialize(accessControlConfig.address, { gasLimit: 1000000 }),
-        simplePriceFeed.setPoolId(pools.XDC, { gasLimit: 1000000 }),
+        dexPriceOracle.initialize(addresses.DEXFactory, { gasLimit: 1000000 }),
+
         collateralTokenAdapter.initialize(
             bookKeeper.address,
             pools.XDC,
@@ -119,14 +113,13 @@ module.exports = async function (deployer) {
             proxyWalletFactory.address
         ),
 
-        //2023 Mar 20 commented out
-        // delayFathomOraclePriceFeed.initialize(
-        //     dexPriceOracle.address,
-        //     addresses.WXDC,
-        //     addresses.USD,
-        //     accessControlConfig.address,
-        //     pools.XDC
-        // ),
+        delayFathomOraclePriceFeed.initialize(
+            dexPriceOracle.address,
+            addresses.USD,
+            addresses.WXDC,
+            accessControlConfig.address,
+            pools.XDC
+        ),
     ];
 
     await Promise.all(promises);
@@ -150,13 +143,11 @@ module.exports = async function (deployer) {
         stableSwapModule: stableSwapModule.address,
         flashMintArbitrager: flashMintArbitrager.address,
         bookKeeperFlashMintArbitrager: bookKeeperFlashMintArbitrager.address,
-        //2023 Mar 20 commented out
-        // dexPriceOracle: dexPriceOracle.address,
+        dexPriceOracle: dexPriceOracle.address,
         proxyWalletFactory: proxyWalletFactory.address,
         fathomStablecoinProxyActions: FathomStablecoinProxyActions.address,
         collateralTokenAdapter: collateralTokenAdapter.address,
-        //2023 Mar 20 commented out
-        // delayFathomOraclePriceFeed: delayFathomOraclePriceFeed.address,
+        delayFathomOraclePriceFeed: delayFathomOraclePriceFeed.address,
     }
 
     fs.writeFileSync('./addresses.json', JSON.stringify(newAddresses));

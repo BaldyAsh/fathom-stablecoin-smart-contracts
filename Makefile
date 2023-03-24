@@ -342,6 +342,12 @@ fullCycle:
 
 makeWallet:
 	coralX execute --network development --path scripts/ankrIntTest/positionOpening.js
+encode:
+	coralX execute --network apothem --path scripts/ankrIntTest/positionOpening_getEncodedData.js
+encode2:
+	coralX execute --network apothem --path scripts/ankrIntTest/closePositionPartial_getencodedData.js
+encode3:
+	coralX execute --network apothem --path scripts/ankrIntTest/closePositionFull_getEncodedData.js
 closePositionFull:
 	coralX execute --network development --path scripts/ankrIntTest/closePositionFull.js
 
