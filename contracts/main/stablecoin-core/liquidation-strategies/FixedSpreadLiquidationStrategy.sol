@@ -76,7 +76,13 @@ contract FixedSpreadLiquidationStrategy is PausableUpgradeable, ReentrancyGuardU
         _;
     }
 
-    function initialize(address _bookKeeper, address _priceOracle, address _liquidationEngine, address _systemDebtEngine, address _stablecoinAdapter) external initializer {
+    function initialize(
+        address _bookKeeper,
+        address _priceOracle,
+        address _liquidationEngine,
+        address _systemDebtEngine,
+        address _stablecoinAdapter
+    ) external initializer {
         PausableUpgradeable.__Pausable_init();
         ReentrancyGuardUpgradeable.__ReentrancyGuard_init();
 
@@ -93,7 +99,6 @@ contract FixedSpreadLiquidationStrategy is PausableUpgradeable, ReentrancyGuardU
         systemDebtEngine = ISystemDebtEngine(_systemDebtEngine);
 
         stablecoinAdapter = IStablecoinAdapter(_stablecoinAdapter); //StablecoinAdapter to deposit FXD to bookKeeper
-
     }
 
     uint256 constant BLN = 10 ** 9;
@@ -236,25 +241,20 @@ contract FixedSpreadLiquidationStrategy is PausableUpgradeable, ReentrancyGuardU
 
         _adapter.onMoveCollateral(_positionAddress, address(this), info.collateralAmountToBeLiquidated, abi.encode(0));
 
-if (
+        if (
             flashLendingEnabled == 1 &&
             _data.length > 0 &&
             _collateralRecipient != address(bookKeeper) &&
             _collateralRecipient != address(liquidationEngine)
         ) {
             //there should be ERC165 function selector check added to above condition
-             bookKeeper.moveCollateral(
-            _collateralPoolId,
-            address(this),
-            _collateralRecipient,
-            info.collateralAmountToBeLiquidated.sub(info.treasuryFees)
+            bookKeeper.moveCollateral(
+                _collateralPoolId,
+                address(this),
+                _collateralRecipient,
+                info.collateralAmountToBeLiquidated.sub(info.treasuryFees)
             );
-            _adapter.onMoveCollateral(
-            address(this),
-            _collateralRecipient,
-            info.collateralAmountToBeLiquidated.sub(info.treasuryFees),
-            abi.encode(0)
-            );
+            _adapter.onMoveCollateral(address(this), _collateralRecipient, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), abi.encode(0));
             IFlashLendingCallee(_collateralRecipient).flashLendingCall(
                 msg.sender,
                 info.actualDebtValueToBeLiquidated,
