@@ -17,6 +17,7 @@ module.exports =  async function(deployer) {
     const flashMintModule = await getProxy(proxyFactory, "FlashMintModule");
     const stableSwapModule = await getProxy(proxyFactory, "StableSwapModule");
     const collateralTokenAdapter = await getProxy(proxyFactory, "CollateralTokenAdapter");
+    const flashLiquidator = await getProxy(proxyFactory, "FlashLiquidator");
     
     await accessControlConfig.grantRole(await accessControlConfig.BOOK_KEEPER_ROLE(), bookKeeper.address)
   
@@ -51,4 +52,8 @@ module.exports =  async function(deployer) {
     await collateralTokenAdapter.whitelist(fixedSpreadLiquidationStrategy.address, { gasLimit: 1000000 });
     await collateralTokenAdapter.whitelist(liquidationEngine.address, { gasLimit: 1000000 });
     await collateralTokenAdapter.whitelist(showStopper.address, { gasLimit: 1000000 });
+
+    await flashLiquidator.whitelist(liquidationEngine.address, { gasLimit: 1000000 });
+    await flashLiquidator.whitelist(fixedSpreadLiquidationStrategy.address, { gasLimit: 1000000 });
+    await flashLiquidator.whitelist(stablecoinAdapter.address, { gasLimit: 1000000 });
 }

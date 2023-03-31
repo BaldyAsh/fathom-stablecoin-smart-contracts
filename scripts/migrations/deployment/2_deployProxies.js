@@ -25,6 +25,7 @@ module.exports = async function (deployer) {
         "StableSwapModule",
         "FlashMintArbitrager",
         "BookKeeperFlashMintArbitrager",
+        "FlashLiquidator",
         "DelayFathomOraclePriceFeed",
         "DexPriceOracle",
         "CollateralTokenAdapter",

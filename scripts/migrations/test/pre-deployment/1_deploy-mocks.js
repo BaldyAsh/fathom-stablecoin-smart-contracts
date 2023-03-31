@@ -1,5 +1,9 @@
 const fs = require('fs');
-const { BigNumber } = require('ethers');
+const { BigNumber, ethers } = require('ethers');
+// require('ethers');
+
+const UniswapV2FactoryArtifact = require("into-the-fathom-swap-smart-contracts/artifacts/contracts/core/UniswapV2Factory.sol/UniswapV2Factory.json");
+const UniswapV2Router02Artifact = require("into-the-fathom-swap-smart-contracts/artifacts/contracts/periphery/UniswapV2Router02.sol/UniswapV2Router02.json");
 
 const rawdata = fs.readFileSync('../../../../externalAddresses.json');
 let addresses = JSON.parse(rawdata);
@@ -21,6 +25,7 @@ module.exports =  async function(deployer) {
       deployer.deploy(SimplePriceFeed, { gas: 7050000 }),
   ];
 
+
   await Promise.all(promises);
 
   const chainId = deployer.networkId(ERC20.address);
@@ -28,6 +33,14 @@ module.exports =  async function(deployer) {
 
   await deployer.deploy(WXDC, { gas: 3050000 }),
   addresses[chainId].WXDC = WXDC.address;
+
+  // const UniswapV2Factory = await ethers.getContractFactory(
+  //   UniswapV2FactoryArtifact.abi,
+  //   UniswapV2FactoryArtifact.bytecode
+  // );
+  // console.log(UniswapV2FactoryArtifact)
+  // const uniswapV2Factory = await deployer.deployContract(UniswapV2FactoryArtifact, "0x4C5F0f90a2D4b518aFba11E22AC9b8F6B031d204", { gas: 3050000 });
+  // console.log("UniswapV2Factory deployed to:", uniswapV2Factory.address);
 
   fs.writeFileSync('./externalAddresses.json', JSON.stringify(addresses));
 };

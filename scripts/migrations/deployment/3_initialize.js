@@ -28,6 +28,7 @@ module.exports = async function (deployer) {
     const stableSwapModule = await getProxy(proxyFactory, "StableSwapModule");
     const flashMintArbitrager = await getProxy(proxyFactory, "FlashMintArbitrager");
     const bookKeeperFlashMintArbitrager = await getProxy(proxyFactory, "BookKeeperFlashMintArbitrager");
+    const flashLiquidator = await getProxy(proxyFactory, "FlashLiquidator");
     const delayFathomOraclePriceFeed = await getProxy(proxyFactory, "DelayFathomOraclePriceFeed");
     const dexPriceOracle = await getProxy(proxyFactory, "DexPriceOracle");
     const collateralTokenAdapter = await getProxy(proxyFactory, "CollateralTokenAdapter");
@@ -103,6 +104,14 @@ module.exports = async function (deployer) {
         flashMintArbitrager.initialize({ gasLimit: 1000000 }),
         bookKeeperFlashMintArbitrager.initialize(fathomStablecoin.address, { gasLimit: 1000000 }),
 
+        flashLiquidator.initialize(
+            bookKeeper.address, 
+            fathomStablecoin.address,
+            stablecoinAdapter.address,
+            addresses.WXDC,
+            addresses.USD,
+             { gasLimit: 1000000 }),
+
         dexPriceOracle.initialize(addresses.DEXFactory, { gasLimit: 1000000 }),
 
         collateralTokenAdapter.initialize(
@@ -143,6 +152,7 @@ module.exports = async function (deployer) {
         stableSwapModule: stableSwapModule.address,
         flashMintArbitrager: flashMintArbitrager.address,
         bookKeeperFlashMintArbitrager: bookKeeperFlashMintArbitrager.address,
+        flashLiquidator: flashLiquidator.address,
         dexPriceOracle: dexPriceOracle.address,
         proxyWalletFactory: proxyWalletFactory.address,
         fathomStablecoinProxyActions: FathomStablecoinProxyActions.address,

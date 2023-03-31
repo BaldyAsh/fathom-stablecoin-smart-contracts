@@ -20,6 +20,7 @@ const LiquidationEngine = artifacts.require('LiquidationEngine.sol');
 const FlashMintModule = artifacts.require('FlashMintModule.sol');
 const FlashMintArbitrager = artifacts.require('FlashMintArbitrager.sol');
 const BookKeeperFlashMintArbitrager = artifacts.require('BookKeeperFlashMintArbitrager.sol');
+const FlashLiquidator = artifacts.require('FlashLiquidator.sol');
 const FathomProxyFactory = artifacts.require('FathomProxyFactory.sol');
 const FathomProxyAdmin = artifacts.require('FathomProxyAdmin.sol');
 const DelayFathomOraclePriceFeed = artifacts.require('DelayFathomOraclePriceFeed.sol');
@@ -49,6 +50,7 @@ module.exports =  async function(deployer) {
       deployer.deploy(FlashMintModule, { gas: 7050000 }),
       deployer.deploy(FlashMintArbitrager, { gas: 7050000 }),
       deployer.deploy(BookKeeperFlashMintArbitrager, { gas: 7050000 }),
+      deployer.deploy(FlashLiquidator, { gas: 7050000 }),
       deployer.deploy(FathomProxyFactory, { gas: 7050000 }),
       deployer.deploy(FathomProxyAdmin, { gas: 7050000 }),
       deployer.deploy(DelayFathomOraclePriceFeed, { gas: 7050000 }),
