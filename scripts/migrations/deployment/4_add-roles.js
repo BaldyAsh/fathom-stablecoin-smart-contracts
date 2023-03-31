@@ -52,6 +52,7 @@ module.exports =  async function(deployer) {
     await collateralTokenAdapter.whitelist(fixedSpreadLiquidationStrategy.address, { gasLimit: 1000000 });
     await collateralTokenAdapter.whitelist(liquidationEngine.address, { gasLimit: 1000000 });
     await collateralTokenAdapter.whitelist(showStopper.address, { gasLimit: 1000000 });
+    await collateralTokenAdapter.whitelist(flashLiquidator.address, { gasLimit: 1000000 });
 
     await flashLiquidator.whitelist(liquidationEngine.address, { gasLimit: 1000000 });
     await flashLiquidator.whitelist(fixedSpreadLiquidationStrategy.address, { gasLimit: 1000000 });

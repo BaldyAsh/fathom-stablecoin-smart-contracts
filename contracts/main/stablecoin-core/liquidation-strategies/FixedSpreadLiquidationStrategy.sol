@@ -241,13 +241,23 @@ contract FixedSpreadLiquidationStrategy is PausableUpgradeable, ReentrancyGuardU
 
         _adapter.onMoveCollateral(_positionAddress, address(this), info.collateralAmountToBeLiquidated, abi.encode(0));
 
+        if (info.treasuryFees > 0) {
+
+            bookKeeper.moveCollateral(_collateralPoolId, address(this), address(systemDebtEngine), info.treasuryFees);
+
+            _adapter.onMoveCollateral(address(this), address(systemDebtEngine), info.treasuryFees, abi.encode(0));
+
+        }
+
         if (
             flashLendingEnabled == 1 &&
             _data.length > 0 &&
             _collateralRecipient != address(bookKeeper) &&
-            _collateralRecipient != address(liquidationEngine)
-        ) {
-            //there should be ERC165 function selector check added to above condition
+            _collateralRecipient != address(liquidationEngine )
+        ))
+         {
+            // //there should be ERC165 function selector check added to above condition
+
             bookKeeper.moveCollateral(
                 _collateralPoolId,
                 address(this),
@@ -255,6 +265,7 @@ contract FixedSpreadLiquidationStrategy is PausableUpgradeable, ReentrancyGuardU
                 info.collateralAmountToBeLiquidated.sub(info.treasuryFees)
             );
             _adapter.onMoveCollateral(address(this), _collateralRecipient, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), abi.encode(0));
+
             IFlashLendingCallee(_collateralRecipient).flashLendingCall(
                 msg.sender,
                 info.actualDebtValueToBeLiquidated,
