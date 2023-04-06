@@ -137,8 +137,7 @@ contract PositionManager is PositionManagerMath, PausableUpgradeable, IManager {
         // Add new position to double linked list and pointers
         if (ownerFirstPositionId[_user] == 0) {
             ownerFirstPositionId[_user] = lastPositionId;
-        }
-        if (ownerLastPositionId[_user] != 0) {
+        }else {
             list[lastPositionId].prev = ownerLastPositionId[_user];
             list[ownerLastPositionId[_user]].next = lastPositionId;
         }
