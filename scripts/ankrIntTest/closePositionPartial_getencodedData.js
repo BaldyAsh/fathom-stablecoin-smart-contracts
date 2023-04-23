@@ -21,9 +21,9 @@ const wipeAndUnlockXDC = async (positionId, collateralAmount, stablecoinAmount) 
   ];
   const wipeAndUnlockXDCIFace = new ethers.utils.Interface(wipeAndUnlockXDCAbi);
   const closeParialPositionCall = wipeAndUnlockXDCIFace.encodeFunctionData("wipeAndUnlockXDC", [
-    "0xF1760BE07B3c3162Ff1782D4a619E8Fc2028a807", //Position Manager
-    "0xd28a2B214F6b8047148e3CA323357766EC124061", //AnkrCollateralAdapter
-    "0x0C57BeB61545B7899f2C6fCD5ECbC6c5D29be6cc", // StablecoinAdapter
+    "0x7aD16A04cC612d2Ab1fDE424B214a3C36c49E61b", //Position Manager
+    "0x5eC92B5E8527d0C28282d230059E48093aaE9f82", //colTokenAdapter
+    "0xeDDe504B30b8231f8f6f50f4eB5f7b8B4136d18b", // StablecoinAdapter
       positionId,
       collateralAmount, // wad
       stablecoinAmount, // wad
@@ -38,7 +38,7 @@ module.exports = async function(deployer) {
   //making wallet
   // const proxyWalletRegistry = await ProxyWalletRegistry.at(stablecoinAddress.proxyWalletRegistry);
 
-  await wipeAndUnlockXDC(3, WeiPerWad.mul(5), WeiPerWad);
+  await wipeAndUnlockXDC(1, WeiPerWad.mul(19100000), WeiPerWad.mul(575000));
 
 };
 
