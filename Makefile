@@ -335,6 +335,9 @@ newStrategy:
 hello:
 	coralX execute --network development --path scripts/ankrIntTest/positionOpening.js
 
+test:
+	coralX execute --network development --path scripts/ankrIntTest/test_getEncodedData.js
+
 makeWallet:
 	coralX execute --network development --path scripts/ankrIntTest/positionOpening_getEncodedData.js
 closePositionFull:
