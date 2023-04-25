@@ -40,9 +40,9 @@ contract FathomStablecoinProxyActionsMath {
     }
 }
 
-/// @notice WARNING: These functions meant to be used as a library for a Proxy.
+/// @notice WARNING: These functions meant to be used as a a library for a Proxy.
 /// @notice DO NOT CALL ANY FUNCTION IN THIS CONTRACT DIRECTLY.
-/// @notice Hence, it shouldn't has any state variables. Some are unsafe if you call them directly.
+/// @notice Hence, it shouldn't has any state vairables. Some are unsafe if you call them directly.
 contract FathomStablecoinProxyActions is FathomStablecoinProxyActionsMath {
     using SafeToken for address;
 
@@ -315,14 +315,14 @@ contract FathomStablecoinProxyActions is FathomStablecoinProxyActionsMath {
         bytes32 _collateralPoolId = IManager(_manager).collateralPools(_positionId);
 
         xdcAdapterDeposit(_xdcAdapter, _positionAddress, _data);
-
         adjustPosition(
             _manager,
             _positionId,
             _safeToInt(msg.value),
             _getDrawDebtShare(_bookKeeper, _stabilityFeeCollector, _positionAddress, _collateralPoolId, _stablecoinAmount),
             _xdcAdapter,
-            _data
+            // _data
+            abi.encodePacked(_stablecoinAmount)
         );
         // Moves the Fathom Stablecoin amount (balance in the bookKeeper in rad) to proxy's address
         moveStablecoin(_manager, _positionId, address(this), _toRad(_stablecoinAmount));
