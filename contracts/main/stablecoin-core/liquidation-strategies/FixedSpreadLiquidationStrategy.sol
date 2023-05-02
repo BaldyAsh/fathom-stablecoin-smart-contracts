@@ -83,6 +83,9 @@ contract FixedSpreadLiquidationStrategy is FixedSpreadLiquidationStrategyMath, P
     );
     event LogSetFlashLendingEnabled(address indexed caller, uint256 _flashLendingEnabled);
 
+    error LogFailedFlash(uint256 _debtValueToRepay, uint256 _collateralAmountToLiquidate);
+
+
     modifier onlyOwnerOrGov() {
         IAccessControlConfig _accessControlConfig = IAccessControlConfig(IBookKeeper(bookKeeper).accessControlConfig());
         require(
@@ -217,12 +220,24 @@ contract FixedSpreadLiquidationStrategy is FixedSpreadLiquidationStrategyMath, P
                 info.collateralAmountToBeLiquidated.sub(info.treasuryFees)
             );
             _adapter.onMoveCollateral(address(this), _collateralRecipient, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), abi.encode(0));
-            IFlashLendingCallee(_collateralRecipient).flashLendingCall(
-                msg.sender,
-                info.actualDebtValueToBeLiquidated,
-                info.collateralAmountToBeLiquidated.sub(info.treasuryFees),
-                _data
-            );
+            
+            (bool success, bytes retunred) = address(_collateralRecipient).call(abi.encodeWithSignature("flashLendingCall(address,uint256,uint256,bytes)", msg.sender, info.actualDebtValueToBeLiquidated, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), _data));
+
+            try this.flashLendingCall(_debtValueToRepay, _collateralAmountToLiquidate, data){
+            } catch Error(string memory reason) {
+                emit LogFlashLiquidationFailure(_caller, _debtValueToRepay, _collateralAmountToLiquidate, reason);
+            } 
+
+            // IFlashLendingCallee(_collateralRecipient).flashLendingCall(
+            //     msg.sender,
+            //     info.actualDebtValueToBeLiquidated,
+            //     info.collateralAmountToBeLiquidated.sub(info.treasuryFees),
+            //     _data
+            // );
+            if(!success) {
+                revert LogFailedFlash(info.actualDebtValueToBeLiquidated, info.collateralAmountToBeLiquidated.sub(info.treasuryFees));
+            }
+
         } else {
             _adapter.withdraw(_collateralRecipient, info.collateralAmountToBeLiquidated.sub(info.treasuryFees), abi.encode(0));
             address _stablecoin = address(stablecoinAdapter.stablecoin());
