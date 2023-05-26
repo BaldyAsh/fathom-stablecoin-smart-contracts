@@ -32,6 +32,8 @@ const setup = async () => {
     await proxyWalletRegistry.setDecentralizedMode(true);
 
     const collateralTokenAdapter2Addr = await collateralPoolConfig.getAdapter(pools.GLD)
+
+    console.log("collateralTokenAdapter2 is " + collateralTokenAdapter2Addr);
     const collateralTokenAdapter2 = await artifacts.initializeInterfaceAt("CollateralTokenAdapter", collateralTokenAdapter2Addr);
 
     ({
@@ -39,7 +41,8 @@ const setup = async () => {
     } = await createProxyWallets([AliceAddress, BobAddress]));
 
     const gldAddr = await collateralTokenAdapter2.collateralToken();
-    const GLD = await artifacts.initializeInterfaceAt("ERC20Mintable", gldAddr);
+
+    const GLD = await artifacts.initializeInterfaceAt("IToken", gldAddr);
     
     await GLD.mint(AliceAddress, WeiPerWad.mul(1000), { gasLimit: 1000000 })
     await GLD.approve(aliceProxyWallet.address, WeiPerWad.mul(1000),  { from: AliceAddress, gasLimit: 1000000 })
