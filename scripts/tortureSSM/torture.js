@@ -31,8 +31,8 @@ module.exports = async function(deployer) {
   const fathomStablecoin = await artifacts.initializeInterfaceAt("ERC20Mintable", FXD);
     //Generate random number between 1 WAD and 100 WAD to deposit 
     function getRandomNumber() {
-        const min = ethers.BigNumber.from('1000000000000000000');
-        const max = ethers.BigNumber.from('100000000000000000000');
+        const min = ethers.BigNumber.from('10000000000000000000');
+        const max = ethers.BigNumber.from('500000000000000000000');
         const range = max.sub(min);
       
         // Generate random bytes

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const folderPath = '/Users/sangjun.lee/Sangjun/fathom-stablecoin-smart-contracts/testResults'; // Replace with the actual path to your folder
+const folderPath = '/Users/sangjun.lee/Sangjun/fathom-stablecoin-smart-contracts/testResults2'; // Replace with the actual path to your folder
 
 let trueCountFXD = 0;
 let falseCountFXD = 0;
