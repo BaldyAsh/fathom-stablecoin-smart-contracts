@@ -337,7 +337,7 @@ contract PositionManager is PositionManagerMath, PausableUpgradeable, IManager {
         );
         ICollateralPoolConfig _collateralPoolConfig = ICollateralPoolConfig(IBookKeeper(bookKeeper).collateralPoolConfig());
         IGenericTokenAdapter _tokenAdapter = IGenericTokenAdapter(_collateralPoolConfig.getAdapter(collateralPools[_sourceId]));
-        // _tokenAdapter.onMoveCollateral(positions[_sourceId], positions[_destinationId], _lockedCollateral, abi.encode());
+        _tokenAdapter.onMoveCollateral(positions[_sourceId], positions[_destinationId], _lockedCollateral, abi.encode());
         emit LogMovePosition(_sourceId, _destinationId, _lockedCollateral, _debtShare);
     }
 
