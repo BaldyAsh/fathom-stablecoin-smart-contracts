@@ -3,7 +3,7 @@ const CollateralPoolConfig = artifacts.require('CollateralPoolConfig.sol');
 const BookKeeper = artifacts.require('BookKeeper.sol');
 const FathomStablecoin = artifacts.require('FathomStablecoin.sol');
 const SystemDebtEngine = artifacts.require('SystemDebtEngine.sol');
-const StableSwapModule = artifacts.require('StableSwapModule.sol');
+// const StableSwapModule = artifacts.require('StableSwapModule.sol');
 const DexPriceOracle = artifacts.require('DexPriceOracle.sol');
 const SlidingWindowDexOracle = artifacts.require('SlidingWindowDexOracle.sol');
 const ProxyWalletRegistry = artifacts.require('ProxyWalletRegistry.sol');
@@ -25,9 +25,9 @@ const DelayFathomOraclePriceFeed = artifacts.require('DelayFathomOraclePriceFeed
 const CollateralTokenAdapter = artifacts.require('CollateralTokenAdapter.sol');
 const ProxyActionsStorage = artifacts.require('ProxyActionsStorage.sol');
 const AdminControls = artifacts.require('AdminControls.sol');
-const PluginPriceOracle = artifacts.require('PluginPriceOracle.sol');
+// const PluginPriceOracle = artifacts.require('PluginPriceOracle.sol');
 const CentralizedOraclePriceFeed = artifacts.require('CentralizedOraclePriceFeed.sol');
-const StableSwapModuleWrapper = artifacts.require('StableSwapModuleWrapper.sol');
+// const StableSwapModuleWrapper = artifacts.require('StableSwapModuleWrapper.sol');
 module.exports =  async function(deployer) {
   let promises = [
       deployer.deploy(AccessControlConfig, { gas: 7050000 }),
@@ -46,7 +46,7 @@ module.exports =  async function(deployer) {
       deployer.deploy(ProxyWalletFactory, { gas: 7050000 }),
       deployer.deploy(ProxyWalletRegistry, { gas: 7050000 }),
       deployer.deploy(DexPriceOracle, { gas: 7050000 }),
-      deployer.deploy(StableSwapModule, { gas: 7050000 }),
+      // deployer.deploy(StableSwapModule, { gas: 7050000 }),
       deployer.deploy(FlashMintModule, { gas: 7050000 }),
       deployer.deploy(FlashMintArbitrager, { gas: 7050000 }),
       deployer.deploy(BookKeeperFlashMintArbitrager, { gas: 7050000 }),
@@ -57,9 +57,9 @@ module.exports =  async function(deployer) {
       deployer.deploy(ProxyActionsStorage, { gas: 7050000 }),
       deployer.deploy(SlidingWindowDexOracle, { gas: 7050000 }),
       deployer.deploy(AdminControls, { gas: 7050000 }),
-      deployer.deploy(PluginPriceOracle, { gas: 7050000 }),
-      deployer.deploy(CentralizedOraclePriceFeed, { gas: 7050000 }),
-      deployer.deploy(StableSwapModuleWrapper, { gas: 7050000 }),
+      // deployer.deploy(PluginPriceOracle, { gas: 7050000 }),
+      // deployer.deploy(CentralizedOraclePriceFeed, { gas: 7050000 }),
+      // deployer.deploy(StableSwapModuleWrapper, { gas: 7050000 }),
   ];
 
   await Promise.all(promises);

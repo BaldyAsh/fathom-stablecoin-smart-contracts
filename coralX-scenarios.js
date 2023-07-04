@@ -4,7 +4,7 @@ module.exports = {
     ['execute', '--path', 'scripts/migrations/configuration', '--network', 'development']
   ],
   deployApothem: [
-    ['execute', '--path', 'scripts/migrations/deployment', '--network', 'apothem'],
+    // ['execute', '--path', 'scripts/migrations/deployment', '--network', 'apothem'],
     ['execute', '--path', 'scripts/migrations/configuration', '--network', 'apothem']
   ],
   addCollateralLocal: [

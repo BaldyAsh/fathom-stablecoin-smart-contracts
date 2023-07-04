@@ -20,16 +20,17 @@ module.exports = async function (deployer) {
     const bookKeeper = await getProxy(proxyFactory, "BookKeeper")
     const collateralPoolConfig = await getProxy(proxyFactory, "CollateralPoolConfig")
     const priceOracle = await getProxy(proxyFactory, "PriceOracle")
-    const centralizedOraclePriceFeed = await getProxy(proxyFactory, "CentralizedOraclePriceFeed");
+    const delayFathomOraclePriceFeed = await getProxy(proxyFactory, "DelayFathomOraclePriceFeed");
+    // const centralizedOraclePriceFeed = await getProxy(proxyFactory, "CentralizedOraclePriceFeed");
     const collateralTokenAdapter = await getProxy(proxyFactory, "CollateralTokenAdapter");
 
     const debtCeilingSetUpTotal = WeiPerRad.mul(10000000);
     const debtCeilingSetUp = WeiPerRad.mul(10000000).div(2);
 
-    await centralizedOraclePriceFeed.peekPrice({ gasLimit: 2000000 });
+    // await centralizedOraclePriceFeed.peekPrice({ gasLimit: 2000000 });
 
     const promises = [
-        initPool(pools.XDC, collateralTokenAdapter.address, centralizedOraclePriceFeed.address, LIQUIDATIONRATIO_75),
+        initPool(pools.XDC, collateralTokenAdapter.address, '0x582E941bf27fc009660B02FCB655e0c64CCB4Fff', LIQUIDATIONRATIO_75),
     ]
 
     await Promise.all(promises);

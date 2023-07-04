@@ -13,8 +13,8 @@ module.exports = async function (deployer) {
 
     ]
     if (config.usePluginOracle) {
-        contracts.push("PluginPriceOracle")
-        contracts.push("CentralizedOraclePriceFeed")
+        // contracts.push("PluginPriceOracle")
+        // contracts.push("CentralizedOraclePriceFeed")
     }
 
     const promises = contracts.map(contract => {
