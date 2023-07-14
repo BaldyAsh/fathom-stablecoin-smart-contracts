@@ -23,7 +23,8 @@ module.exports = async function (deployer) {
             positionId,
             "0x"
         ]);
-        await proxyWallet.execute(call, { from: from });
+        console.log(positionId + "  " + call)
+        // await proxyWallet.execute(call, { from: from });
     }
 
     for (const positionId of positionsToRedeemLockedCollateral) {
