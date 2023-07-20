@@ -2,30 +2,22 @@
 pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+
 import "../../interfaces/IStablecoin.sol";
 import "../../interfaces/IBookKeeper.sol";
-import "../../interfaces/IToken.sol";
 import "../../interfaces/IStablecoinAdapter.sol";
 import "../../interfaces/ICagable.sol";
 import "../../interfaces/IPausable.sol";
+import "../../utils/CommonMath.sol";
 
-contract StablecoinAdapterMath {
-    uint256 internal constant ONE = 10 ** 27;
-
-    function mul(uint256 x, uint256 y) internal pure returns (uint256 z) {
-        require(y == 0 || (z = x * y) / y == x);
-    }
-}
-
-contract StablecoinAdapter is StablecoinAdapterMath, PausableUpgradeable, ReentrancyGuardUpgradeable, IStablecoinAdapter, ICagable, IPausable {
+contract StablecoinAdapter is CommonMath, PausableUpgradeable, ReentrancyGuardUpgradeable, IStablecoinAdapter, ICagable, IPausable {
     IBookKeeper public override bookKeeper; // CDP Engine
     IStablecoin public override stablecoin; // Stablecoin Token
     uint256 public live; // Active Flag
 
     modifier onlyOwnerOrGov() {
-        IAccessControlConfig _accessControlConfig = IAccessControlConfig(IBookKeeper(bookKeeper).accessControlConfig());
+        IAccessControlConfig _accessControlConfig = IAccessControlConfig(bookKeeper.accessControlConfig());
         require(
             _accessControlConfig.hasRole(_accessControlConfig.OWNER_ROLE(), msg.sender) ||
                 _accessControlConfig.hasRole(_accessControlConfig.GOV_ROLE(), msg.sender),
@@ -35,7 +27,7 @@ contract StablecoinAdapter is StablecoinAdapterMath, PausableUpgradeable, Reentr
     }
 
     modifier onlyOwnerOrShowStopper() {
-        IAccessControlConfig _accessControlConfig = IAccessControlConfig(IBookKeeper(bookKeeper).accessControlConfig());
+        IAccessControlConfig _accessControlConfig = IAccessControlConfig(bookKeeper.accessControlConfig());
         require(
             _accessControlConfig.hasRole(_accessControlConfig.OWNER_ROLE(), msg.sender) ||
                 _accessControlConfig.hasRole(_accessControlConfig.SHOW_STOPPER_ROLE(), msg.sender),
@@ -47,6 +39,9 @@ contract StablecoinAdapter is StablecoinAdapterMath, PausableUpgradeable, Reentr
     function initialize(address _bookKeeper, address _stablecoin) external initializer {
         PausableUpgradeable.__Pausable_init();
         ReentrancyGuardUpgradeable.__ReentrancyGuard_init();
+
+        require(_bookKeeper != address(0), "StablecoinAdapter/zero-book-keeper");
+        require(_stablecoin != address(0), "StablecoinAdapter/zero-stablecoin");
 
         live = 1;
         bookKeeper = IBookKeeper(_bookKeeper);
@@ -66,19 +61,19 @@ contract StablecoinAdapter is StablecoinAdapterMath, PausableUpgradeable, Reentr
         emit LogUncage();
     }
 
-    function deposit(address usr, uint256 wad, bytes calldata /* data */) external payable override nonReentrant whenNotPaused {
-        bookKeeper.moveStablecoin(address(this), usr, mul(ONE, wad));
+    function deposit(address usr, uint256 wad, bytes calldata /* data */) external override nonReentrant whenNotPaused {
+        bookKeeper.moveStablecoin(address(this), usr, wad * RAY);
         stablecoin.burn(msg.sender, wad);
     }
 
-    function depositRAD(address usr, uint256 ray, bytes calldata /* data */) external payable override nonReentrant whenNotPaused {
-        bookKeeper.moveStablecoin(address(this), usr, ray);
-        stablecoin.burn(msg.sender, (ray / ONE) + 1);
+    function depositRAD(address usr, uint256 rad, bytes calldata /* data */) external override nonReentrant whenNotPaused {
+        bookKeeper.moveStablecoin(address(this), usr, rad);
+        stablecoin.burn(msg.sender, (rad / RAY) + 1);
     }
 
     function withdraw(address usr, uint256 wad, bytes calldata /* data */) external override nonReentrant whenNotPaused {
         require(live == 1, "StablecoinAdapter/not-live");
-        bookKeeper.moveStablecoin(msg.sender, address(this), mul(ONE, wad));
+        bookKeeper.moveStablecoin(msg.sender, address(this), wad * RAY);
         stablecoin.mint(usr, wad);
     }
 

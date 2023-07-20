@@ -208,6 +208,13 @@ describe("SystemDebtEngine", () => {
           .withArgs(DeployerAddress, UnitHelpers.WeiPerRad)
       })
     })
+    context("when the caller is the owner but the setSurplusBuffer value is less than RAD", async () => {
+      it("should revert", async () => {
+        await mockedAccessControlConfig.mock.hasRole.returns(true)
+
+        await expect(systemDebtEngineAsAlice.setSurplusBuffer(BigNumber.from("100"))).to.be.revertedWith("SystemDebtEngine/invalidSurplusBuffer")
+      })
+    })
   })
 
   describe("#pause", () => {
@@ -302,7 +309,6 @@ describe("SystemDebtEngine", () => {
         await expect(
           systemDebtEngineAsAlice.withdrawCollateralSurplus(
             formatBytes32String("WXDC"),
-            mockedCollateralTokenAdapter.address,
             DeployerAddress,
             UnitHelpers.WeiPerWad
           )
@@ -320,16 +326,8 @@ describe("SystemDebtEngine", () => {
           UnitHelpers.WeiPerWad
         ).returns()
 
-        await mockedCollateralTokenAdapter.mock.onMoveCollateral.withArgs(
-          systemDebtEngine.address,
-          DeployerAddress,
-          UnitHelpers.WeiPerWad,
-          ethers.utils.defaultAbiCoder.encode(["address"], [DeployerAddress])
-        ).returns()
-
         await systemDebtEngine.withdrawCollateralSurplus(
           formatBytes32String("WXDC"),
-          mockedCollateralTokenAdapter.address,
           DeployerAddress,
           UnitHelpers.WeiPerWad
         )
