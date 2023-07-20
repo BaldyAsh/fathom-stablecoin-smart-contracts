@@ -9,6 +9,7 @@ const { getAddresses } = require("../common/addresses");
 
 const { formatBytes32String } = require("ethers/lib/utils");
 
+
 const COLLATERAL_POOL_ID = formatBytes32String("XDC");
 
 const SSMAddress = '0x31A188FfEd12c7E2E6141E18a3b8A0e78E60249e';
@@ -58,14 +59,14 @@ module.exports = async function(deployer) {
         return randomNumber;
       }
       
-      const randomNumber = getRandomNumber();
-      console.log(randomNumber.toString());
+    const randomNumber = getRandomNumber();
+    console.log(randomNumber.toString());
 
     await stableSwapWrapper.depositTokens(randomNumber.toString());
-    const depositTrackerValue = await stableSwapWrapper.depositTracker(EOA);
+    const depositTrackerValue = await stableSwapWrapper.depositTracker(accounts[0]);
     const correct0 = randomNumber.mul('2') == depositTrackerValue.toString()
     
-    const ActualLiquidityAvailablePerUser0 =  await stableSwapWrapper.getActualLiquidityAvailablePerUser(EOA);
+    const ActualLiquidityAvailablePerUser0 =  await stableSwapWrapper.getActualLiquidityAvailablePerUser(accounts[0]);
 
     const randomNumberToSwap0 = getRandomNumber2();
     const randomNumberToSwap1 = getRandomNumber();
@@ -73,31 +74,31 @@ module.exports = async function(deployer) {
     //need to give a lot of tokens to EOA
     await stableSwapModule.swapTokenToStablecoin(EOA, randomNumberToSwap0.toString());
     await stableSwapModule.swapStablecoinToToken(EOA, randomNumberToSwap1.toString());
+
+    const ActualLiquidityAvailablePerUser0PostSwap =  await stableSwapWrapper.getActualLiquidityAvailablePerUser(accounts[0]);
     
-    const USDTxBalanceBeforeWithdrawal = await usdtX.balanceOf(EOA);
-    const FXDBalanceBeforeWithdrawal = await fxd.balanceOf(EOA);
+    const USDTxBalanceBeforeWithdrawal = await usdtX.balanceOf(accounts[0]);
+    const FXDBalanceBeforeWithdrawal = await fxd.balanceOf(accounts[0]);
 
+    const claimableFees = await stableSwapWrapper.getClaimableFeesPerUser(accounts[0])
 
-    const ActualLiquidityAvailablePerUser1 =  await stableSwapWrapper.getActualLiquidityAvailablePerUser(EOA);
+    await stableSwapWrapper.claimFeesRewards();
+    await stableSwapWrapper.withdrawClaimedFees()
 
-    const expectedFXDBalanceAfterWithdraw = ActualLiquidityAvailablePerUser1[0].add(FXDBalanceBeforeWithdrawal);
-    const expectedUSDTBalanceAfterWithdraw = ActualLiquidityAvailablePerUser1[1].div(ethers.BigNumber.from('1000000000000')).add(USDTxBalanceBeforeWithdrawal);
+    const FXDBalancePostWithdrawal = await fxd.balanceOf(accounts[0]);
+    const USDTxBalancePostWithdrawal = await usdtX.balanceOf(accounts[0]);
 
-    await stableSwapWrapper.withdrawTokens(depositTrackerValue.toString());
-
-    const FXDBalancePostWithdrawal = await fxd.balanceOf(EOA);
-    const USDTxBalancePostWithdrawal = await usdtX.balanceOf(EOA);
+    const expectedFXDBalanceAfterWithdraw = FXDBalanceBeforeWithdrawal.add(claimableFees[0]);
+    const expectedTokenBalanceAfterWithdraw = USDTxBalancePostWithdrawal.add(claimableFees[1]);
 
     const correct1 = (expectedFXDBalanceAfterWithdraw.toString() == FXDBalancePostWithdrawal.toString());
-    const correct2 = (expectedUSDTBalanceAfterWithdraw.toString() == USDTxBalancePostWithdrawal.toString());
+    const correct2 = (expectedTokenBalanceAfterWithdraw.toString() == USDTxBalancePostWithdrawal.toString());
 
-    console.log(expectedUSDTBalanceAfterWithdraw);
+    console.log(FXDBalancePostWithdrawal);
     console.log(USDTxBalancePostWithdrawal);
-
 
     console.log(correct1);
     console.log(correct2);
-
 
     const data = {
         depositAmount: randomNumber.toString(),
@@ -105,8 +106,8 @@ module.exports = async function(deployer) {
         isDepositTrackerCorrect: correct0,
         ActualLiquidityAvailablePerUserFXD : ActualLiquidityAvailablePerUser0[0].toString(),
         ActualLiquidityAvailablePerUserUSDT : ActualLiquidityAvailablePerUser0[1].toString(),
-        ActualLiquidityAvailablePerUserFXDPostSwap : ActualLiquidityAvailablePerUser1[0].toString(),
-        ActualLiquidityAvailablePerUserUSDTPostSwap : ActualLiquidityAvailablePerUser1[1].toString(),
+        ActualLiquidityAvailablePerUserFXDPostSwap : ActualLiquidityAvailablePerUser0PostSwap[0].toString(),
+        ActualLiquidityAvailablePerUserUSDTPostSwap : ActualLiquidityAvailablePerUser0PostSwap[1].toString(),
         FXDBalanceBeforeWithdrawal : FXDBalanceBeforeWithdrawal.toString(),
         USDTxBalanceBeforeWithdrawal : USDTxBalanceBeforeWithdrawal.toString(),
         IsFXDValueAsExpectedPostWithdrawl : correct1,

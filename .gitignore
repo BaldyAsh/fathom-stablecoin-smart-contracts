@@ -12,9 +12,10 @@ coverage
 coverage.json
 typechain
 typechain-types
-privateKey
+privateKey*
 /build
 addresses.json
+mnemonic
 
 addresses.json
 #Hardhat files

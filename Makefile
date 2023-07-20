@@ -360,10 +360,15 @@ closePositionFull:
 Crazy:
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
 CrazyRepeat:
+	
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	mv privateKey1 privateKey
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	mv privateKey2 privateKey
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	mv privateKey3 privateKey
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	mv privateKey4 privateKey
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
 	coralX execute --network apothem --path scripts/tortureSSM/torture.js
