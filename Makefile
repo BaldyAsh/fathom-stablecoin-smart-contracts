@@ -357,120 +357,67 @@ encode5:
 closePositionFull:
 	coralX execute --network development --path scripts/ankrIntTest/closePositionFull.js
 
+
+
 Crazy:
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	cp privateKey1 privateKey
+
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+
+CrazyDeposit:
+	
+	
+	cp privateKey1 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/approveAndDeposit.js
+	
+	cp privateKey2 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/approveAndDeposit.js
+	
+	cp privateKey3 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/approveAndDeposit.js
+	
+	cp privateKey4 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/approveAndDeposit.js
+
 CrazyRepeat:
 	
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	mv privateKey1 privateKey
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	mv privateKey2 privateKey
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	mv privateKey3 privateKey
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	mv privateKey4 privateKey
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	cp privateKey1 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey2 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey3 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	
+	cp privateKey1 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey2 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey3 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
 
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	cp privateKey1 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey2 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey4 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	
+	cp privateKey1 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey2 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey4 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
 
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
 
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	cp privateKey1 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey2 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey3 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
+	cp privateKey4 privateKey
+	coralX execute --network apothem --path scripts/tortureSSM/torture-Fees.js
 
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
-	coralX execute --network apothem --path scripts/tortureSSM/torture.js
+	
+	

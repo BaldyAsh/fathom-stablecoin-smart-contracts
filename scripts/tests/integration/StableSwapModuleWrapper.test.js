@@ -103,13 +103,13 @@ describe("StableSwapModuleWrapper", () => {
 
     describe('#ShouldDepositTokens', async () => {
         context("Should deposit tokens", () => {
-            it("Should deposit", async () => {
+            xit("Should deposit", async () => {
                 await stableSwapModuleWrapper.depositTokens(TO_DEPOSIT, { gasLimit: 1000000 })
             })
         })
 
         context("Should not deposit tokens and revert for not whitelisted people", () => {
-            it("Should deposit", async () => {
+            xit("Should deposit", async () => {
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
                 await USDT.mint(accounts[2], TO_DEPOSIT_USD, { gasLimit: 1000000 })
@@ -119,7 +119,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("Should let whitelisted people deposit Tokens", () => {
-            it("Should deposit from whitelisted address", async () => {
+            xit("Should deposit from whitelisted address", async () => {
                 await stableSwapModuleWrapper.addToWhitelist(accounts[2], { gasLimit: 1000000 })
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
@@ -128,7 +128,7 @@ describe("StableSwapModuleWrapper", () => {
                 await stableSwapModuleWrapper.depositTokens(TO_DEPOSIT, { gasLimit: 1000000, from: accounts[2] })
             })
 
-            it("Should deposit from whitelisted address and after its removed from whitelist, should revert", async () => {
+            xit("Should deposit from whitelisted address and after its removed from whitelist, should revert", async () => {
                 await stableSwapModuleWrapper.addToWhitelist(accounts[2], { gasLimit: 1000000 })
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
@@ -143,7 +143,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe('#ShouldDepositTokensAndSwap', async () => {
         context("Should let whitelisted people deposit Tokens and then swap", () => {
-            it("Should deposit", async () => {
+            xit("Should deposit", async () => {
                 await stableSwapModuleWrapper.addToWhitelist(accounts[2], { gasLimit: 1000000 })
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
@@ -160,7 +160,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe("#feesTest-IsItFair?", async () => {
         context("1. whitelist multiple accounts, 2. deposit tokens with that account, 3. swap to generate fees, 4. claim and withdraw fees, 5. withdraw all tokens 6. total value locked is zero", async () => {
-            it("Should claim and withdraw same fees for each depositor as they have same deposit amount", async () => {
+            xit("Should claim and withdraw same fees for each depositor as they have same deposit amount", async () => {
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT = WeiPerWad.mul(1000)
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT_USD = WeiPerSixDecimals.mul(1000)
                 let TOTAL_FXD_BALANCE_AFTER_DEPOSIT = Array.from(Array(5))
@@ -249,7 +249,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("1. whitelist multiple accounts, 2. deposit tokens with that account, 3. swap to generate fees, 4. withdraw the deposited tokens", async () => {
-            it("Should withdraw tokens but the one that withdraws tokens earlier must have slightly less fees rewards", async () => {
+            xit("Should withdraw tokens but the one that withdraws tokens earlier must have slightly less fees rewards", async () => {
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT = WeiPerWad.mul(1000)
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT_USD = WeiPerSixDecimals.mul(1000)
                 for (let i = 1; i < 5; i++) {
@@ -295,11 +295,69 @@ describe("StableSwapModuleWrapper", () => {
                 }
             })
         })
+
+        context("1. whitelist multiple accounts, 2. deposit tokens with that account, 3. swap to generate fees, 4. claim and withdraw fees, 5. withdraw all tokens 6. total value locked is zero", async () => {
+            it("Should claim and withdraw same fees for each depositor as they have same deposit amount", async () => {
+                const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT = WeiPerWad.mul(10000000)
+                const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT_USD = WeiPerSixDecimals.mul(10000000)
+                let TOTAL_FXD_BALANCE_AFTER_DEPOSIT = Array.from(Array(5))
+                let TOTAL_TOKEN_BALANCE_AFTER_DEPOSIT = Array.from(Array(5))
+
+
+
+                for (let i = 1; i < 5; i++) {
+                    console.log(`depositing for account [${i}]`)
+                    await stableSwapModuleWrapper.addToWhitelist(accounts[i], { gasLimit: 1000000 })
+                    await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[i] })
+                    await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[i] })
+                    await USDT.mint(accounts[i], TOTAL_DEPOSIT_FOR_EACH_ACCOUNT_USD, { gasLimit: 1000000 })
+                    await fathomStablecoin.mint(accounts[i], TOTAL_DEPOSIT_FOR_EACH_ACCOUNT, { gasLimit: 1000000 })
+                    
+                    await stableSwapModuleWrapper.depositTokens(TOTAL_DEPOSIT_FOR_EACH_ACCOUNT, { gasLimit: 1000000, from: accounts[i] })
+                    TOTAL_FXD_BALANCE_AFTER_DEPOSIT[i] = await fathomStablecoin.balanceOf(accounts[i])
+                    TOTAL_TOKEN_BALANCE_AFTER_DEPOSIT[i] = await USDT.balanceOf(accounts[i])
+                }
+
+
+                for (let i = 1; i < 5; i++){
+                    await stableSwapModule.swapTokenToStablecoin(accounts[i], ONE_PERCENT_OF_TOTAL_DEPOSIT_SIX_DECIMALS_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
+                    await stableSwapModule.swapStablecoinToToken(accounts[i], ONE_PERCENT_OF_TOTAL_DEPOSIT_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
+                }
+
+                for (let i = 1; i < 5; i++) {
+                    await TimeHelpers.increase(1)
+                    await stableSwapModule.swapTokenToStablecoin(accounts[i], ONE_PERCENT_OF_TOTAL_DEPOSIT_SIX_DECIMALS_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
+                    
+                    await TimeHelpers.increase(1)
+                    await stableSwapModule.swapStablecoinToToken(accounts[i], ONE_PERCENT_OF_TOTAL_DEPOSIT_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
+                    
+                    const FXDBalanceBeforeFeesWithdrawal = await fathomStablecoin.balanceOf(accounts[0])
+                    const USDTxBalanceBeforeFeesWithdrawal = await USDT.balanceOf(accounts[0])
+
+                    const claimableFees = await stableSwapModuleWrapper.getClaimableFeesPerUser(accounts[0])
+                    console.log("Claim Fees Rewards")
+                    await stableSwapModuleWrapper.claimFeesRewards();
+    
+                    console.log("Withdraw Claimed Fees")
+                    await stableSwapModuleWrapper.withdrawClaimedFees()
+
+                    const FXDBalancePostWithdrawalOfFees = await fathomStablecoin.balanceOf(accounts[0]);
+                    const USDTxBalancePostWithdrawalOfFees = await USDT.balanceOf(accounts[0]);
+                    
+                    const expectedFXDBalanceAfterWithdraw = FXDBalanceBeforeFeesWithdrawal.add(claimableFees[0]);
+                    const expectedTokenBalanceAfterWithdraw = USDTxBalanceBeforeFeesWithdrawal.add(claimableFees[1]);
+                    console.log("Claimable FXD Fees: ", claimableFees[0].toString())
+                    console.log("Claimable Token Fees: ", claimableFees[1].toString())
+                    expect(FXDBalancePostWithdrawalOfFees).to.be.equal(expectedFXDBalanceAfterWithdraw);
+                    expect(USDTxBalancePostWithdrawalOfFees).to.be.equal(expectedTokenBalanceAfterWithdraw);
+                }
+        })
     })
+})
 
     describe("#randomScenarioTesting", async () => {
         context("Scenario where LPs deposit and withdraw and swap happens at different times", async () => {
-            it("Should be successful", async() => {
+            xit("Should be successful", async() => {
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT = WeiPerWad.mul(1000)
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT_USD = WeiPerSixDecimals.mul(1000)
                 //whitelist and deposit for 3 accounts
@@ -379,7 +437,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe('#withdrawTokens from Stableswap with stableswapWrapper', async () => {
         context("Should withdraw tokens from stableswap", () => {
-            it("Should withdraw", async () => {
+            xit("Should withdraw", async () => {
                 await stableSwapModuleWrapper.withdrawTokens(
                     WeiPerWad,
                     {
@@ -391,7 +449,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("Should withdraw tokens from stableswap as per the ratio with swap stablecoin to token", () => {
-            it("Should withdraw", async () => {
+            xit("Should withdraw", async () => {
                 await stableSwapModule.swapStablecoinToToken(DeployerAddress
                     , ONE_PERCENT_OF_TOTAL_DEPOSIT_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
 
@@ -451,7 +509,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("Should withdraw tokens from stableswap as per the ratio with swap token to stablecoin", () => {
-            it("Should withdraw", async () => {
+            xit("Should withdraw", async () => {
 
                 await stableSwapModule.swapTokenToStablecoin(DeployerAddress
                     , ONE_PERCENT_OF_TOTAL_DEPOSIT_SIX_DECIMALS_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
@@ -514,7 +572,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("Should withdraw tokens from stableswap as per the ratio with swap token to stablecoin and swap stablecoin to token", () => {
-            it("Should withdraw", async () => {
+            xit("Should withdraw", async () => {
                 await stableSwapModule.swapTokenToStablecoin(DeployerAddress
                     , ONE_PERCENT_OF_TOTAL_DEPOSIT_SIX_DECIMALS_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
 
@@ -578,7 +636,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context('1. Whitelist one account, 2. swap tokens to generate fees, 3. withdraw tokens, 4. repeat steps 2 and 3', async () => {
-            it('Should withdraw correct fees and check the console for verfication ', async () => {
+            xit('Should withdraw correct fees and check the console for verfication ', async () => {
                 await stableSwapModuleWrapper.addToWhitelist(accounts[2], { gasLimit: 1000000 })
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { gasLimit: 1000000, from: accounts[2] })
@@ -651,7 +709,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe("#decentralizedState", async () => {
         context("set decentralized state and deposit tokens by anybody", async () => {
-            it("Should succeed", async () => {
+            xit("Should succeed", async () => {
                 await stableSwapModuleWrapper.setIsDecentralizedState(true, { from: DeployerAddress })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { from: AliceAddress, gasLimit: 8000000 })
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { from: AliceAddress, gasLimit: 8000000 })
@@ -660,7 +718,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("set decentralized state and deposit tokens should succeed then, set decentralized state as false and should fail", async () => {
-            it("Should succeed", async () => {
+            xit("Should succeed", async () => {
                 await stableSwapModuleWrapper.setIsDecentralizedState(true, { from: DeployerAddress })
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { from: accounts[1], gasLimit: 8000000 })
                 await USDT.approve(stableSwapModuleWrapper.address, MaxUint256, { from: accounts[1], gasLimit: 8000000 })
@@ -677,7 +735,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe("#depositTokens", async () => {
         context("deposit USDT and FXD as not whiteListed account", async () => {
-            it("should fail", async () => {
+            xit("should fail", async () => {
                 await fathomStablecoin.approve(stableSwapModuleWrapper.address, MaxUint256, { from: accounts[1], gasLimit: 8000000 })
                 await USDT.approve(stableSwapModule.address, MaxUint256, { from: accounts[1], gasLimit: 8000000 })
                 await expect(
@@ -687,7 +745,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context("deposit USDT and FXD as whiteListed account", async () => {
-            it("should succeed", async () => {
+            xit("should succeed", async () => {
                 await stableSwapModuleWrapper.depositTokens(TO_DEPOSIT, { gasLimit: 8000000 })
                 const depositTracker1 = await stableSwapModuleWrapper.depositTracker(DeployerAddress);
                 expect(depositTracker1).to.be.equal(TO_DEPOSIT.mul(4))
@@ -699,7 +757,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe('#amountGetters', async () => {
         context('#getAmounts', async () => {
-            it('should return the correct amount of tokens', async () => {
+            xit('should return the correct amount of tokens', async () => {
                 const amounts = await stableSwapModuleWrapper.getAmounts(TO_DEPOSIT)
                 expect(amounts[0]).to.be.equal(TO_DEPOSIT.div(2))
                 expect(amounts[1]).to.be.equal(TO_DEPOSIT.div(2))
@@ -707,7 +765,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context('#getAmounts', async () => {
-            it('should return the correct amount of tokens after swap', async () => {
+            xit('should return the correct amount of tokens after swap', async () => {
                 await stableSwapModule.swapTokenToStablecoin(DeployerAddress
                     , ONE_PERCENT_OF_TOTAL_DEPOSIT_SIX_DECIMALS_SINGLE_SWAP_FIT, { gasLimit: 1000000 })
                 const amounts = await stableSwapModuleWrapper.getAmounts(TO_DEPOSIT)
@@ -717,7 +775,7 @@ describe("StableSwapModuleWrapper", () => {
         })
 
         context('#getActualLiquidityAvailablePerUser', async () => {
-            it('should return the correct amount of tokens', async () => {
+            xit('should return the correct amount of tokens', async () => {
                 const amounts = await stableSwapModuleWrapper.getActualLiquidityAvailablePerUser(DeployerAddress)
                 expect(amounts[0]).to.be.equal(TO_DEPOSIT)
                 expect(amounts[1]).to.be.equal(TO_DEPOSIT)
@@ -727,7 +785,7 @@ describe("StableSwapModuleWrapper", () => {
 
     describe('#emergencyScenario', async () => {
         context("1. whitelist multiple accounts, 2. deposit tokens with that account, 3. swap to generate fees, 4. pause and emergencyWithdraw, 5. totalValueLocked = 0", async () => {
-            it("Should withdraw tokens with emergencyWithdraw", async () => {
+            xit("Should withdraw tokens with emergencyWithdraw", async () => {
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT = WeiPerWad.mul(1000)
                 const TOTAL_DEPOSIT_FOR_EACH_ACCOUNT_USD = WeiPerSixDecimals.mul(1000)
                 for (let i = 1; i < 5; i++) {

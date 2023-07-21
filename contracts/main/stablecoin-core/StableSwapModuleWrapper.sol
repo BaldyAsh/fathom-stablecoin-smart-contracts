@@ -192,6 +192,20 @@ contract StableSwapModuleWrapper is PausableUpgradeable, ReentrancyGuardUpgradea
         require(IStableSwapRetriever(stableSwapModule).paused(),"emergencyWithdraw/SSM-not-paused");
         require(depositTracker[msg.sender] != 0, "emergencyWithdraw/amount-zero");
         (uint256 stablecoinAmountToWithdraw, uint256 tokenAmountToWithdraw) = this.getActualLiquidityAvailablePerUser(msg.sender);
+        depositTracker[msg.sender] = 0;
+
+        if(totalValueDeposited > stablecoinAmountToWithdraw + tokenAmountToWithdraw) {
+            totalValueDeposited -= stablecoinAmountToWithdraw + tokenAmountToWithdraw;
+        }else {
+            totalValueDeposited = 0;
+        }
+        
+        
+        checkpointFXDFee[msg.sender] = 0;
+        checkpointTokenFee[msg.sender] = 0;
+        claimedFXDFeeRewards[msg.sender] = 0;
+        claimedTokenFeeRewards[msg.sender] = 0;
+        
         _withdrawFromStableSwap(stablecoin, stablecoinAmountToWithdraw);
         uint256 tokenAmountToWithdrawScaled = _convertDecimals(tokenAmountToWithdraw, 18, IToken(token).decimals());
         _withdrawFromStableSwap(token, tokenAmountToWithdrawScaled);
@@ -258,7 +272,6 @@ contract StableSwapModuleWrapper is PausableUpgradeable, ReentrancyGuardUpgradea
         return (newFeeRewardsForStablecoin, newFeesRewardsForToken);
     }
     
-
 
     function _claimFeesRewards() internal {
         uint256 totalStablecoinLiquidity = _totalStablecoinBalanceStableswap();
