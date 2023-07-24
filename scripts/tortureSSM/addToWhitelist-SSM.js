@@ -12,7 +12,7 @@ const { formatBytes32String } = require("ethers/lib/utils");
 
 const COLLATERAL_POOL_ID = formatBytes32String("XDC");
 
-const SSM = '0x40cddC07a9fB92019f7E60934d3c1C15Df451a56';
+const SSM = '0x174c0C3DB99B9676CB179302B98D98c085865f22';
 
 module.exports = async function(deployer) {
 

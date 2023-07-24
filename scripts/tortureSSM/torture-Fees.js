@@ -12,8 +12,8 @@ const { formatBytes32String } = require("ethers/lib/utils");
 
 const COLLATERAL_POOL_ID = formatBytes32String("XDC");
 
-const SSMAddress = '0x40cddC07a9fB92019f7E60934d3c1C15Df451a56';
-const SSMWrapperAddress = '0xe0f2b813b681575b1B84e5e7F2eb450b71E8d212';
+const SSMAddress = '0x174c0C3DB99B9676CB179302B98D98c085865f22';
+const SSMWrapperAddress = '0xdF0525B9B1b8ED1Db70a238Babf723aF2C3A5378';
 const USDTx = '0x9dD4761Bd68169478a06156c0C1416fB9506BE78';
 const FXD = '0xEd816e06cdb7B449bFa9fdB7A55d95A85A224Ecc';
 const EOA = '0x0Eb7DEE6e18Cce8fE839E986502d95d47dC0ADa3';

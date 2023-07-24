@@ -12,7 +12,7 @@ const { formatBytes32String } = require("ethers/lib/utils");
 
 const COLLATERAL_POOL_ID = formatBytes32String("XDC");
 
-const SSMWrapperAddress = '0xe0f2b813b681575b1B84e5e7F2eb450b71E8d212';
+const SSMWrapperAddress = '0xdF0525B9B1b8ED1Db70a238Babf723aF2C3A5378';
 
 module.exports = async function(deployer) {
 
@@ -21,7 +21,6 @@ module.exports = async function(deployer) {
     
     console.log("Adding to whitelist -1");
     await stableSwapWrapper.addToWhitelist('0x0Eb7DEE6e18Cce8fE839E986502d95d47dC0ADa3', { gasLimit: 1000000 })
-
     console.log("Adding to whitelist -1");
     await stableSwapWrapper.addToWhitelist('0xE82C380C6Ca0306C61454569e84e020d68B063EF', { gasLimit: 1000000 })
     console.log("Adding to whitelist -1");
