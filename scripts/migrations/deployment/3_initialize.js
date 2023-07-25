@@ -35,6 +35,8 @@ module.exports = async function (deployer) {
     const pluginPriceOracle = await getProxy(proxyFactory, "PluginPriceOracle");
     const centralizedOraclePriceFeed = await getProxy(proxyFactory, "CentralizedOraclePriceFeed");
     const stableSwapModuleWrapper = await getProxy(proxyFactory, "StableSwapModuleWrapper");
+    const simplePriceFeed = await getProxy(proxyFactory, "SimplePriceFeed");
+
     const fathomStablecoinProxyActions = await artifacts.initializeInterfaceAt("FathomStablecoinProxyActions", "FathomStablecoinProxyActions");
 
     const addresses = getAddresses(deployer.networkId())
@@ -137,6 +139,7 @@ module.exports = async function (deployer) {
             flashMintModule.address,
             stablecoinAdapter.address
         ),
+        simplePriceFeed.initialize(accessControlConfig.address),
         pluginPriceOracle.initialize(accessControlConfig.address, addresses.PluginOracle),
         centralizedOraclePriceFeed.initialize(pluginPriceOracle.address, accessControlConfig.address, pools.XDC),
         stableSwapModuleWrapper.initialize(

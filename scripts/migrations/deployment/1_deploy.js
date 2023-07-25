@@ -28,6 +28,7 @@ const AdminControls = artifacts.require('AdminControls.sol');
 const PluginPriceOracle = artifacts.require('PluginPriceOracle.sol');
 const CentralizedOraclePriceFeed = artifacts.require('CentralizedOraclePriceFeed.sol');
 const StableSwapModuleWrapper = artifacts.require('StableSwapModuleWrapper.sol');
+const SimplePriceFeed = artifacts.require('SimplePriceFeed');
 module.exports =  async function(deployer) {
   let promises = [
       deployer.deploy(AccessControlConfig, { gas: 7050000 }),
@@ -60,6 +61,8 @@ module.exports =  async function(deployer) {
       deployer.deploy(PluginPriceOracle, { gas: 7050000 }),
       deployer.deploy(CentralizedOraclePriceFeed, { gas: 7050000 }),
       deployer.deploy(StableSwapModuleWrapper, { gas: 7050000 }),
+      deployer.deploy(SimplePriceFeed, { gas: 7050000 }),
+
   ];
 
   await Promise.all(promises);
