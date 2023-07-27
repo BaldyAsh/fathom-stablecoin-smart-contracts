@@ -177,7 +177,7 @@ module.exports = async function (deployer) {
         adminControls: adminControls.address,
         // pluginPriceOracle: pluginPriceOracle.address,
         // centralizedOraclePriceFeed: centralizedOraclePriceFeed.address
-        simplePriceFeed: simplePriceFeed.address:
+        simplePriceFeed: simplePriceFeed.address
     }
 
     fs.writeFileSync('./addresses.json', JSON.stringify(newAddresses));
