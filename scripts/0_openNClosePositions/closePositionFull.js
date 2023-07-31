@@ -14,16 +14,7 @@ const { AliceAddress } = require("../tests/helper/address");
 const { WeiPerWad } = require("../tests/helper/unit");
 
 
-const wipeAllAndUnlockXDC = async (proxyWallet, from, positionId, collateralAmount, stablecoinAmount) => {
-  const positionManager = await artifacts.initializeInterfaceAt("PositionManager", "PositionManager");
-  const stablecoinAdapter = await artifacts.initializeInterfaceAt("StablecoinAdapter", "StablecoinAdapter");
-  const stabilityFeeCollector = await artifacts.initializeInterfaceAt("StabilityFeeCollector", "StabilityFeeCollector");
-  const fathomStablecoinProxyActions = await artifacts.initializeInterfaceAt("FathomStablecoinProxyActions", "FathomStablecoinProxyActions");
-  const xdcAdapter = await artifacts.initializeInterfaceAt("AnkrCollateralAdapter", "AnkrCollateralAdapter");
-  const fathomStablecoin = await artifacts.initializeInterfaceAt("FathomStablecoin", "FathomStablecoin");
-
-  await fathomStablecoin.approve(proxyWallet.address, stablecoinAmount, { from: from})
-
+const wipeAllAndUnlockXDC = async (proxyWallet, positionId, collateralAmount) => {
   console.log("closePosition1");
 
 
@@ -32,32 +23,40 @@ const wipeAllAndUnlockXDC = async (proxyWallet, from, positionId, collateralAmou
   ];
   const wipeAllAndUnlockXDCIFace = new ethers.utils.Interface(wipeAllAndUnlockXDCAbi);
   const closePositionCall = wipeAllAndUnlockXDCIFace.encodeFunctionData("wipeAllAndUnlockXDC", [
-      positionManager.address,
-      xdcAdapter.address,
-      stablecoinAdapter.address,
+      "0x9661dCD4043eDb266a43e4Bd65DCae87dE051FD6", //Position Manager
+      "0x7793129dDB6de37249eF98168D989e5E2fBee76E", //AnkrCollateralAdapter
+      "0x2A63856eba3F3A1B07B6Cf3296D5e6f601E26044", // StablecoinAdapter
       positionId,
       collateralAmount, // wad
-      ethers.utils.defaultAbiCoder.encode(["address"], [from]),
+      "0x00"
   ])
   console.log(closePositionCall);
   console.log("closePosition2");
-  await proxyWallet.execute2(fathomStablecoinProxyActions.address, closePositionCall, { from: from })
+  await proxyWallet.execute(closePositionCall)
   console.log("closePosition3");
 }
 
 module.exports = async function(deployer) {
 
-  //making wallet
-  // const proxyWalletRegistry = await ProxyWalletRegistry.at(stablecoinAddress.proxyWalletRegistry);
-  const proxyWalletRegistry = await artifacts.initializeInterfaceAt("ProxyWalletRegistry", "ProxyWalletRegistry");
+  const devDeployer = "0x0Eb7DEE6e18Cce8fE839E986502d95d47dC0ADa3";
 
-  const proxyWalletAliceAddress = await proxyWalletRegistry.proxies(AliceAddress)
+  const proxyWalletRegistry = await artifacts.initializeInterfaceAt("ProxyWalletRegistry", "0x97307cA8744d7ab35e75BdC54194fcC003F5222b");
 
-  const proxyWalletAsAlice = await artifacts.initializeInterfaceAt("ProxyWallet", proxyWalletAliceAddress);
-  // const proxyWalletAsAliceOwner = await proxyWalletAsAlice.owner({ from: AliceAddress });
-  // console.log(AliceAddress == proxyWalletAsAliceOwner);
+  const proxyWalletDevDeployerAddress = await proxyWalletRegistry.proxies(devDeployer)
 
+  const proxyWalletAsDevDeployer = await artifacts.initializeInterfaceAt("ProxyWallet", proxyWalletDevDeployerAddress);
 
-  await wipeAllAndUnlockXDC(proxyWalletAsAlice, AliceAddress, 1, WeiPerWad, WeiPerWad.mul(3));
+  const positionManager = await artifacts.initializeInterfaceAt("PositionManager", "0x9661dCD4043eDb266a43e4Bd65DCae87dE051FD6");
+
+  const lastPositionId = await positionManager.ownerLastPositionId();
+
+  const bookKeeper = await artifacts.initializeInterfaceAt("BookKeeper", "0xe9f8f2B94dFA17e02ce93B9607f9694923Bde153");
+
+  const lockedCollateral = await bookKeeper.positions();
+
+  //I need re compile becausee the position close functions' signatures have changed
+  //
+
+  await wipeAllAndUnlockXDC(proxyWalletAsDevDeployer, lastPositionId, lockedCollateral[0]);
   
 };

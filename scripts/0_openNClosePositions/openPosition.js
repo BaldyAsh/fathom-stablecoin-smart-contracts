@@ -38,7 +38,7 @@ const openPositionAndDraw = async (proxyWallet, collateral_pool_id, stablecoinAm
 
 function getRandomNumber() {
   const min = ethers.BigNumber.from('2000');
-  const max = ethers.BigNumber.from('20000');
+  const max = ethers.BigNumber.from('3000');
   const range = max - min;
 
   // Generate random bytes
@@ -53,7 +53,7 @@ function getRandomNumber() {
 
 function getRandomNumber2() {
   const min = ethers.BigNumber.from('20');
-  const max = ethers.BigNumber.from('200');
+  const max = ethers.BigNumber.from('30');
   const range = max - (min);
 
   // Generate random bytes

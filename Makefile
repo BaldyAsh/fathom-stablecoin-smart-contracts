@@ -355,27 +355,50 @@ encode5:
 
 
 closePositionFull:
-	coralX execute --network development --path scripts/ankrIntTest/closePositionFull.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/closePositionFull.js
 
 openCrazy:
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	coralX execute --network apothem --path scripts/ankrIntTest/apothem_positionOpening.js
-	
-
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
+	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
