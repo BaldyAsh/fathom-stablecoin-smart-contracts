@@ -33,7 +33,9 @@ const openPositionAndDraw = async (proxyWallet, collateral_pool_id, stablecoinAm
   console.log("below is the encoded data");
   console.log(openPositionCall);
 
-  await proxyWallet.execute(openPositionCall, {value: ethers.constants.WeiPerEther.mul(getRandomNumber())})
+  // await proxyWallet.execute(openPositionCall, {value: ethers.constants.WeiPerEther.mul(getRandomNumber())})
+  await proxyWallet.execute(openPositionCall, {value: ethers.constants.WeiPerEther.mul(2000)})
+
 }
 
 function getRandomNumber() {
@@ -75,5 +77,7 @@ module.exports = async function(deployer) {
 
   const proxyWalletAsDevDeployer = await artifacts.initializeInterfaceAt("ProxyWallet", proxyWalletDevDeployerAddress);
 
-  await openPositionAndDraw(proxyWalletAsDevDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(getRandomNumber2()));
+  // await openPositionAndDraw(proxyWalletAsDevDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(getRandomNumber2()));
+  await openPositionAndDraw(proxyWalletAsDevDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(66));
+
 };
