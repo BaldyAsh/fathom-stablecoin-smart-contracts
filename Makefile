@@ -354,6 +354,14 @@ encode5:
 	coralX execute --network apothem --path scripts/ankrIntTest/positionOpeningTopUp.js
 
 
+continueDeploy:
+	coralX execute --network apothem --path scripts/migrations/deployment/5_configure-fees.js
+	coralX execute --network apothem --path scripts/migrations/deployment/6_configure-show-stopper.js
+	coralX execute --network apothem --path scripts/migrations/deployment/7_deployVault.js
+	coralX execute --network apothem --path scripts/migrations/deployment/8_initialize_collateralTokenAdapter.js
+	coralX execute --network apothem --path scripts/migrations/deployment/9_configure-flash-lending.js
+	coralX execute --network apothem --path scripts/migrations/configuration/1_add-collateral-pools.js
+
 closePositionFull:
 	coralX execute --network apothem --path scripts/0_openNClosePositions/closePositionFull.js
 

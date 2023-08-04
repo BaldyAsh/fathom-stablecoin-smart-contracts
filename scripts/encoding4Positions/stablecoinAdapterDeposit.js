@@ -15,9 +15,9 @@ const stablecoinAdapterDeposit = async () => {
   ];
   const stablecoinAdapterDepositIFace = new ethers.utils.Interface(stablecoinAdapterDepositAbi);
   const stablecoinAdapterDeposit = stablecoinAdapterDepositIFace.encodeFunctionData("stablecoinAdapterDeposit", [
-      "0x40A3ecc81A3bC15Bd5A5c92d252BE4481f7f2902", // stablecoinAdapter
-      "0x693fa9d072f50E4CAA0cee834f04ce277226b288", // systemDebtEngine
-      WeiPerWad.mul(30), // stablecoinAmount
+      "0xA11970336211310B063a117434337AE7ccA1FB67", // stablecoinAdapter
+      "0x9E7D0738EA9942CA9E66185ACd59ca2d7b92B694", // systemDebtEngine
+      WeiPerWad.mul(150), // stablecoinAmount
       "0x00"    //stablecoinAmount
   ])
   console.log("below is the encoded data");
