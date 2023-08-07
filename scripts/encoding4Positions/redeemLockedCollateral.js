@@ -12,8 +12,8 @@ const redeemLockedCollateral = async () => {
   ];
   const redeemLockedCollateralIFace = new ethers.utils.Interface(redeemLockedCollateralAbi);
   const redeemLockedCollateral = redeemLockedCollateralIFace.encodeFunctionData("redeemLockedCollateral", [
-      "0xCc42170fc2920d992BaE63f3a92003E61a322fc6", //Position Manager
-      "3", //positionId uint256
+      "0xb8BB3303830afef24924E01107E95e490Ac17016", //Position Manager
+      "2", //positionId uint256
       "0x00",
   ])
   console.log("below is the encoded data");

@@ -14,7 +14,7 @@ const emergencyWithdraw = async () => {
   ];
   const emergencyWithdrawIFace = new ethers.utils.Interface(emergencyWithdrawAbi);
   const emergencyWithdraw = emergencyWithdrawIFace.encodeFunctionData("emergencyWithdraw", [
-      "0xa7d964773a1112c2C68a94575D7dba8F465efbA4", //CollateralTokenAdapter
+      "0x066c87701CeDA5741e26d4E722792B44CC6A17a6", //CollateralTokenAdapter
       "0x9a337088801B30a3eB715937BCDE27A34BC62841"//_to
   ])
   console.log("below is the encoded data");
