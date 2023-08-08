@@ -22,10 +22,10 @@ const openPositionAndDraw = async (proxyWallet, collateral_pool_id, stablecoinAm
   ];
   const openLockTokenAndDrawIFace = new ethers.utils.Interface(openLockXDCAndDrawAbi);
   const openPositionCall = openLockTokenAndDrawIFace.encodeFunctionData("openLockXDCAndDraw", [
-      "0x9661dCD4043eDb266a43e4Bd65DCae87dE051FD6", //Position Manager
-      "0x2b7a0146E88fa7DC334d221561516f751ae3F8b9", // StabilityFeeCollector
-      "0x7793129dDB6de37249eF98168D989e5E2fBee76E", //AnkrCollateralAdapter
-      "0x2A63856eba3F3A1B07B6Cf3296D5e6f601E26044", // StablecoinAdapter
+    "0x2fE84707e907eaB4C4E6a91CCe458E648be390Ae", //Position Manager
+    "0x00f093e0E188dA1711a18fd5BF7468aea706888C", // StabilityFeeCollector
+    "0x2fc7e65023aFF27FA61A573B5C8E3fDe3CE9ef79", //AnkrCollateralAdapter
+    "0xE3b248A97E9eb778c9B08f20a74c9165E22ef40E", // StablecoinAdapter
       collateral_pool_id,
       stablecoinAmount, // wad
       "0x00",

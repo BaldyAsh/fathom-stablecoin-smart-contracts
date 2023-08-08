@@ -20,10 +20,10 @@ const openPositionAndDraw = async (collateral_pool_id, stablecoinAmount) => {
   ];
   const openLockTokenAndDrawIFace = new ethers.utils.Interface(openLockXDCAndDrawAbi);
   const openPositionCall = openLockTokenAndDrawIFace.encodeFunctionData("openLockXDCAndDraw", [
-      "0xb8BB3303830afef24924E01107E95e490Ac17016", //Position Manager
-      "0x5C1a1d26702576A461a63f65cA8b5CC0072f6487", // StabilityFeeCollector
-      "0x066c87701CeDA5741e26d4E722792B44CC6A17a6", //AnkrCollateralAdapter
-      "0xA11970336211310B063a117434337AE7ccA1FB67", // StablecoinAdapter
+    "0x2fE84707e907eaB4C4E6a91CCe458E648be390Ae", //Position Manager
+    "0x00f093e0E188dA1711a18fd5BF7468aea706888C", // StabilityFeeCollector
+    "0x2fc7e65023aFF27FA61A573B5C8E3fDe3CE9ef79", //AnkrCollateralAdapter
+    "0xE3b248A97E9eb778c9B08f20a74c9165E22ef40E", // StablecoinAdapter
       collateral_pool_id,
       stablecoinAmount, // wad
       "0x00",
@@ -34,5 +34,5 @@ const openPositionAndDraw = async (collateral_pool_id, stablecoinAmount) => {
 }
 
 module.exports = async function(deployer) {
-  await openPositionAndDraw(COLLATERAL_POOL_ID, WeiPerWad.mul(75));
+  await openPositionAndDraw(COLLATERAL_POOL_ID, WeiPerWad.mul(5));
 };

@@ -362,8 +362,8 @@ continueDeploy:
 	coralX execute --network apothem --path scripts/migrations/deployment/9_configure-flash-lending.js
 	coralX execute --network apothem --path scripts/migrations/configuration/1_add-collateral-pools.js
 
-closePositionFull:
-	coralX execute --network apothem --path scripts/0_openNClosePositions/closePositionFull.js
+openPosition:
+	coralX execute --network apothem --path scripts/encoding4Positions/openPosition.js
 
 openCrazy:
 	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
