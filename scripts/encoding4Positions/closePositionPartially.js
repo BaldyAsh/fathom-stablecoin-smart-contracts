@@ -14,18 +14,19 @@ const { AliceAddress } = require("../tests/helper/address");
 const { WeiPerWad } = require("../tests/helper/unit");
 
 
-const wipeAllAndUnlockXDC = async (positionId, collateralAmount) => {
+const wipeAndUnlockXDC = async (positionId, collateralAmount, stablecoinAmount) => {
 
-  const wipeAllAndUnlockXDCAbi = [
-      "function wipeAllAndUnlockXDC(address _manager, address _xdcAdapter, address _stablecoinAdapter, uint256 _positionId, uint256 _collateralAmount, bytes calldata _data)"
-  ];
-  const wipeAllAndUnlockXDCIFace = new ethers.utils.Interface(wipeAllAndUnlockXDCAbi);
-  const closePositionCall = wipeAllAndUnlockXDCIFace.encodeFunctionData("wipeAllAndUnlockXDC", [
+  const wipeAndUnlockXDCAbi = [
+    "function wipeAndUnlockXDC(address _manager, address _xdcAdapter, address _stablecoinAdapter, uint256 _positionId, uint256 _collateralAmount, uint256 _stablecoinAmount, bytes calldata _data)"
+];
+  const wipeAndUnlockXDCIFace = new ethers.utils.Interface(wipeAndUnlockXDCAbi);
+  const closePositionCall = wipeAndUnlockXDCIFace.encodeFunctionData("wipeAndUnlockXDC", [
       "0x2fE84707e907eaB4C4E6a91CCe458E648be390Ae",//    positionManager.address,
       "0x2fc7e65023aFF27FA61A573B5C8E3fDe3CE9ef79",//      xdcAdapter.address,
       "0xE3b248A97E9eb778c9B08f20a74c9165E22ef40E", //      stablecoinAdapter.address,
       positionId,
       collateralAmount, // wad
+      stablecoinAmount, // wad
       0x00,
   ])
   console.log(closePositionCall);
@@ -35,5 +36,5 @@ const wipeAllAndUnlockXDC = async (positionId, collateralAmount) => {
 }
 
 module.exports = async function(deployer) {
-  await wipeAllAndUnlockXDC(147, WeiPerWad.mul(999));
+  await wipeAndUnlockXDC(147, WeiPerWad.mul(99), WeiPerWad.div(2));
 };

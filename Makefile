@@ -364,6 +364,10 @@ continueDeploy:
 
 openPosition:
 	coralX execute --network apothem --path scripts/encoding4Positions/openPosition.js
+fullClosePosition:
+	coralX execute --network apothem --path scripts/encoding4Positions/closePositionFull.js
+partialClosePosition:
+	coralX execute --network apothem --path scripts/encoding4Positions/closePositionPartially.js
 
 openCrazy:
 	coralX execute --network apothem --path scripts/0_openNClosePositions/openPosition.js
