@@ -355,6 +355,7 @@ encode5:
 
 
 continueDeploy:
+	coralX execute --network apothem --path scripts/migrations/deployment/4_add-roles.js
 	coralX execute --network apothem --path scripts/migrations/deployment/5_configure-fees.js
 	coralX execute --network apothem --path scripts/migrations/deployment/6_configure-show-stopper.js
 	coralX execute --network apothem --path scripts/migrations/deployment/7_deployVault.js
