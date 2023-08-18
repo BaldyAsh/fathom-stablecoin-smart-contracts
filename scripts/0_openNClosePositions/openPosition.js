@@ -22,10 +22,10 @@ const openPositionAndDraw = async (proxyWallet, collateral_pool_id, stablecoinAm
   ];
   const openLockTokenAndDrawIFace = new ethers.utils.Interface(openLockXDCAndDrawAbi);
   const openPositionCall = openLockTokenAndDrawIFace.encodeFunctionData("openLockXDCAndDraw", [
-    "0x2fE84707e907eaB4C4E6a91CCe458E648be390Ae", //Position Manager
-    "0x00f093e0E188dA1711a18fd5BF7468aea706888C", // StabilityFeeCollector
-    "0x2fc7e65023aFF27FA61A573B5C8E3fDe3CE9ef79", //AnkrCollateralAdapter
-    "0xE3b248A97E9eb778c9B08f20a74c9165E22ef40E", // StablecoinAdapter
+    "0x546a8F92946aDc1e5227446209dc3E2301E75Aa6", //Position Manager
+    "0xFa93093E02de24825483f94A71003480b76043A3", // StabilityFeeCollector
+    "0xF7C87b68Fc1d59C1D3aab7dcFAdf25a6925649F8", //AnkrCollateralAdapter
+    "0x4b94659CC3d42Beaca646D67E73435556d0D3512", // StablecoinAdapter
       collateral_pool_id,
       stablecoinAmount, // wad
       "0x00",
@@ -78,6 +78,6 @@ module.exports = async function(deployer) {
   const proxyWalletAsDevDeployer = await artifacts.initializeInterfaceAt("ProxyWallet", proxyWalletDevDeployerAddress);
 
   // await openPositionAndDraw(proxyWalletAsDevDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(getRandomNumber2()));
-  await openPositionAndDraw(proxyWalletAsDevDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(66));
+  await openPositionAndDraw(proxyWalletAsDevDeployer, COLLATERAL_POOL_ID, WeiPerWad.mul(5));
 
 };
