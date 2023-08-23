@@ -9,7 +9,7 @@ module.exports = {
       gasPrice: '0x3b9aca00',
     },
     apothem: {
-      host: "https://erpc.apothem.network/",
+      host: "https://apothem.xdcrpc.com",
       private_key: fs.readFileSync("./privateKey").toString(),
       gasPrice: '0x3b9aca00',
     },
