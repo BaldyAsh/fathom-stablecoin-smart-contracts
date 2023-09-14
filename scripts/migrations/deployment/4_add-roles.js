@@ -16,6 +16,7 @@ module.exports =  async function(deployer) {
     const accessControlConfig = await getProxy(proxyFactory, "AccessControlConfig");
     const flashMintModule = await getProxy(proxyFactory, "FlashMintModule");
     const stableSwapModule = await getProxy(proxyFactory, "StableSwapModule");
+    const stableSwapModuleWrapper = await getProxy(proxyFactory, "StableSwapModuleWrapper");
     const collateralTokenAdapter = await getProxy(proxyFactory, "CollateralTokenAdapter");
     const systemDebtEngine = await getProxy(proxyFactory, "SystemDebtEngine");
     const adminControls = await getProxy(proxyFactory, "AdminControls");
@@ -57,4 +58,5 @@ module.exports =  async function(deployer) {
     await collateralTokenAdapter.whitelist(fixedSpreadLiquidationStrategy.address, { gasLimit: 1000000 });
     await collateralTokenAdapter.whitelist(liquidationEngine.address, { gasLimit: 1000000 });
     await collateralTokenAdapter.whitelist(showStopper.address, { gasLimit: 1000000 });
+    await stableSwapModule.setStableSwapWrapper(stableSwapModuleWrapper.address);
 }
