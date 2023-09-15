@@ -21,9 +21,9 @@ const wipeAndUnlockXDC = async (positionId, collateralAmount, stablecoinAmount) 
 ];
   const wipeAndUnlockXDCIFace = new ethers.utils.Interface(wipeAndUnlockXDCAbi);
   const closePositionCall = wipeAndUnlockXDCIFace.encodeFunctionData("wipeAndUnlockXDC", [
-      "0x2fE84707e907eaB4C4E6a91CCe458E648be390Ae",//    positionManager.address,
-      "0x2fc7e65023aFF27FA61A573B5C8E3fDe3CE9ef79",//      xdcAdapter.address,
-      "0xE3b248A97E9eb778c9B08f20a74c9165E22ef40E", //      stablecoinAdapter.address,
+      "0x762348d386afa72c9C3E7D4CDc59659D2572b68c",//    positionManager.address,
+      "0xf7BBB8EFb3C0122759f9066449fb395022543107",//      xdcAdapter.address,
+      "0xcDFdCB3B4CdC94F4a4216dCf339a95b69d56824A", //      stablecoinAdapter.address,
       positionId,
       collateralAmount, // wad
       stablecoinAmount, // wad
@@ -36,5 +36,5 @@ const wipeAndUnlockXDC = async (positionId, collateralAmount, stablecoinAmount) 
 }
 
 module.exports = async function(deployer) {
-  await wipeAndUnlockXDC(147, WeiPerWad.mul(99), WeiPerWad.div(2));
+  await wipeAndUnlockXDC(5, WeiPerWad.mul(10), WeiPerWad.mul(4000));
 };

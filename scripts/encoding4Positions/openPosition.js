@@ -34,5 +34,5 @@ const openPositionAndDraw = async (collateral_pool_id, stablecoinAmount) => {
 }
 
 module.exports = async function(deployer) {
-  await openPositionAndDraw(COLLATERAL_POOL_ID, WeiPerWad.mul(100000));
+  await openPositionAndDraw(COLLATERAL_POOL_ID, WeiPerWad.mul(5000));
 };
